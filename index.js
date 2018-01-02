@@ -18,15 +18,15 @@ function main() {
 
     polNonTrip4chanPosts.forEach(p => {
         p.source = '4chan_pol_anon';
-        p.link = `https://archive.4plebs.org/pol/thread/${p.threadId}/#${p.postId}`;
+        p.link = `https://archive.4plebs.org/pol/thread/${p.threadId}/#${p.id}`;
     });
     polTrip4chanPosts.forEach(p => {
         p.source = '4chan_pol';
-        p.link = `https://archive.4plebs.org/pol/thread/${p.threadId}/#${p.postId}`;
+        p.link = `https://archive.4plebs.org/pol/thread/${p.threadId}/#${p.id}`;
     });
     polTrip8chanPosts.forEach(p => {
         p.source = '8chan_pol';
-        p.link = `https://8ch.net/pol/res/${p.threadId}.html#${p.postId}`;
+        p.link = `https://8ch.net/pol/res/${p.threadId}.html#${p.id}`;
     });
     posts = []
         .concat(polNonTrip4chanPosts)
@@ -37,7 +37,7 @@ function main() {
         .concat(cbts8chanNonQPosts);
 
     posts.sort((a, b) => b.timestamp - a.timestamp);
-    postOrder.push(...(posts.map(p => p.id || p.postId).reverse()));
+    postOrder.push(...(posts.map(p => p.id).reverse()));
 
     loadLocalAnswers();
     fetch('data/answers.json', {credentials: 'same-origin'})
@@ -63,7 +63,7 @@ function initSearch() {
 
         const ids = posts
             .filter(p => p.text && keywordInText(p.text))
-            .map(p => p.id || p.postId);
+            .map(p => p.id);
 
         applyFilter(ids);
         if (value == '') 
@@ -76,7 +76,7 @@ function initSearch() {
     const postLines = posts
         .filter(p => p.text)
         .map(p => ({
-            id: p.id || p.postId,
+            id: p.id,
             lines: p
                 .text
                 .split('\n')
@@ -114,7 +114,7 @@ function initSearch() {
 function applyFilter(ids) {
     let count = 0;
     for (const element of Array.from(document.querySelectorAll('article'))) {
-        if (ids.includes(element.item.id || element.item.postId)) {
+        if (ids.includes(element.item.id)) {
             element.hidden = false;
             count++;
         } else {
@@ -176,68 +176,23 @@ const html = {
             ${ifExists(post.userId, x => `
             <span class="userid" title="userid">ID: ${x}</span>`)}
 
-            <a href="${post.link}" target="_blank">${post.postId}</a>
-
-            ${ifExists(post.edited, x => `
-            <span class="edited" title="${edate.toISOString()}">Last edited at ${formatDate(edate)}, ${formatTime(edate)}</span>`)}
-        </header>
-
-        ${ifExists(post.fileName, x => `
-        <span class="filename" title="file name">${x}</span>`)}
-
-        ${ifExists(post.imageUrl, post.isNew
-            ? html.img
-            : pipe(localImgSrc, html.img))}
-        ${forAll(post.extraImageUrls, post.isNew
-            ? html.img
-            : pipe(localImgSrc, html.img))}
-
-        <div class="text">${addHighlights(post.text)}</div>`;
-    },
-    post2: (post) => {
-        if (!post) 
-            return '';
-        const date = new Date(post.timestamp * 1000);
-        const edate = new Date(post.edited * 1000);
-        return `
-        <header>
-            <time datetime="${date.toISOString()}">${formatDate(date)}, ${formatTime(date)}</time>
-
-            ${ifExists(post.subject, x => `
-            <span class="subject" title="subject">${x}</span>`)}
-
-            <span class="name" title="name">${post.name}</span>
-
-            ${ifExists(post.trip, x => `
-            <span class="trip" title="trip">${x}</span>`)}
-
-            ${ifExists(post.email, x => `
-            <span class="email" title="email">${x}</span>`)}
-
-            ${ifExists(post.userId, x => `
-            <span class="userid" title="userid">ID: ${x}</span>`)}
-
             <a href="${post.link}" target="_blank">${post.id}</a>
 
             ${ifExists(post.edited, x => `
             <span class="edited" title="${edate.toISOString()}">Last edited at ${formatDate(edate)}, ${formatTime(edate)}</span>`)}
         </header>
 
-        ${forAll(post.images, html.img2)}
+        ${forAll(post.images, html.img)}
 
         <div class="text">${addHighlights(post.text)}</div>`;
     },
-    img: (src) => {
-        if (!src) 
-            return '';
-        return `<a href="${src}" target="_blank"><img src="${src}" class="contain" width="300" height="300"></a>`;
-    },
-    img2: (image) => {
+    img: (image) => {
         if (!image) 
             return '';
         const url = localImgSrc(image.url);
         return `<a href="${url}" target="_blank">
-          <span class="filename" title="file name">${image.filename}</span>
+          ${ifExists(image.filename, x => `
+          <span class="filename" title="file name">${x}</span>`)}
           <img src="${url}" class="contain" width="300" height="300">
         </a>`;
     }
@@ -250,29 +205,14 @@ function dateToHtmlElement(date) {
 }
 
 function postToHtmlElement(post) {
-    const element = tag.fromString((post.source === '8chan_cbts_nonq')
-        ? `<article id="post${post.id}" class="source_${post.source} ${ifExists(post.timestampDeletion, () => 'deleted')}">
+    const element = tag.fromString(`
+        <article id="post${post.id}" class="source_${post.source} ${ifExists(post.timestampDeletion, () => 'deleted')}">
           <button onclick="selectAnswers(${post.id})" class="answers ${answerButtonClass(post.id)}">answers</button>
           <span class="counter">${postOrder.indexOf(post.id) + 1}</span>
           ${forAll(post.references, x => `
-          <blockquote id="post${post.id}">${html.post2(x)}</blockquote>`)}
-          ${html.post2(post)}
-        </article>`
-        : (post.source === '8chan_cbts'
-            ? `<article id="post${post.id}" class="source_${post.source} ${ifExists(post.timestampDeletion, () => 'deleted')}">
-          <button onclick="selectAnswers(${post.id})" class="answers ${answerButtonClass(post.id)}">answers</button>
-          <span class="counter">${postOrder.indexOf(post.id) + 1}</span>
-          ${forAll(post.references, x => `
-          <blockquote id="post${post.id}">${html.post2(x)}</blockquote>`)}
-          ${html.post2(post)}
-        </article>`
-            : `<article id="post${post.postId}" class="source_${post.source} ${ifExists(post.timestampDeletion, () => 'deleted')}">
-        <button onclick="selectAnswers(${post.postId})" class="answers ${answerButtonClass(post.postId)}">answers</button>
-        <span class="counter">${postOrder.indexOf(post.postId) + 1}</span>
-        ${ifExists(post.reference, x => `
-        <blockquote id="post${post.postId}">${html.post(x)}</blockquote>`)}
-        ${html.post(post)}
-      </article>`));
+          <blockquote id="post${post.id}">${html.post(x)}</blockquote>`)}
+          ${html.post(post)}
+        </article>`);
     element.item = post;
     return element;
 }
@@ -582,7 +522,7 @@ function getPostsByThread(id) {
             if (referencePattern.test(newPost.text)) {
                 referencePattern.lastIndex = 0;
                 const referenceId = referencePattern.exec(newPost.text)[1];
-                newPost.references = threadPosts.filter((p) => p.postId == referenceId);
+                newPost.references = threadPosts.filter((p) => p.id == referenceId);
             }
         }
         console.log(`added ${newPosts.length} thread ${id}`);
@@ -604,9 +544,7 @@ function parse8chanPost(post, threadId) {
         'email': 'email',
         'trip': 'trip',
         'com': 'text',
-        'sub': 'subject',
-        'tim': 'imageUrl',
-        'extra_files': 'extraImageUrls',
+        'sub': 'subject'
         // 'filename': 'fileName',
     };
 
@@ -627,7 +565,7 @@ function parse8chanPost(post, threadId) {
             newPost[keyMap[key]] = cleanHtmlText(post[key]);
         else 
             newPost[keyMap[key]] = post[key];
-        }
+    }
     newPost.source = '8chan_cbts';
     newPost.link = `https://8ch.net/cbts/res/${threadId}.html#${newPost.id}`;
     newPost.threadId = '' + threadId;
@@ -678,7 +616,7 @@ function copyAnswers() {
 
 function resetAnswer() {
     ifElement('article.selected', selectedArticle => {
-        const postId = selectedArticle.item.postId;
+        const postId = selectedArticle.item.id;
         delete editedAnswers[postId];
         const value = answers[postId] || '';
         editor.value(value);
@@ -697,7 +635,7 @@ const answerIsEdited = postId => (!answers[postId] && editor.value().length) || 
 
 function selectAnswers(selectedPostId) {
     ifElement('article.selected', selectedArticle => {
-        const postId = selectedArticle.item.postId;
+        const postId = selectedArticle.item.id;
         if (answerIsEdited(postId)) {
             editedAnswers[postId] = editor.value();
             selectedArticle
@@ -748,7 +686,7 @@ function selectAnswers(selectedPostId) {
 
 function storeLocalAnswers() {
     ifElement('article.selected', selectedArticle => {
-        const postId = selectedArticle.item.postId;
+        const postId = selectedArticle.item.id;
         editedAnswers[postId] = editor.value();
     });
     localStorage.setItem('answers', JSON.stringify(editedAnswers));
