@@ -16,38 +16,27 @@ function main() {
 
     statusElement = document.querySelector('#status');
 
-    polNonTrip4chanPosts.forEach(p => {
-        p.source = '4chan_pol_anon';
-        p.link = `https://archive.4plebs.org/pol/thread/${p.threadId}/#${p.id}`;
-    });
-    polTrip4chanPosts.forEach(p => {
-        p.source = '4chan_pol';
-        p.link = `https://archive.4plebs.org/pol/thread/${p.threadId}/#${p.id}`;
-    });
-    polTrip8chanPosts.forEach(p => {
-        p.source = '8chan_pol';
-        p.link = `https://8ch.net/pol/res/${p.threadId}.html#${p.id}`;
-    });
-    posts = []
-        .concat(polNonTrip4chanPosts)
-        .concat(polTrip4chanPosts)
-        .concat(polTrip8chanPosts)
-        .concat(cbtsNonTrip8chanPosts)
-        .concat(cbtsTrip8chanPosts)
-        .concat(cbts8chanNonQPosts);
 
-    posts.sort((a, b) => b.timestamp - a.timestamp);
-    postOrder.push(...(posts.map(p => p.id).reverse()));
+    Promise.all([
+        getLocalJson('polNonTrip4chanPosts'),
+        getLocalJson('polTrip4chanPosts'),
+        getLocalJson('polTrip8chanPosts'),
+        getLocalJson('cbtsNonTrip8chanPosts'),
+        getLocalJson('cbtsTrip8chanPosts'),
+    ]).then(values => {
+        posts = values.reduce((p, c) => p.concat(c), []);
+        posts.sort((a, b) => b.timestamp - a.timestamp);
+        postOrder.push(...(posts.map(p => p.id).reverse()));
 
-    loadLocalAnswers();
-    fetch('data/answers.json', {credentials: 'same-origin'})
-        .then(result => result.text())
-        .then(json => {
-            answers = JSON.parse(json);
+        loadLocalAnswers();
+        getLocalJson('answers').then(json => {
+            answers = json;
             render(posts);
         });
+    });
+
     toggleAnswers();
-    checkForNewPosts();
+    // checkForNewPosts();
 }
 
 function initSearch() {
@@ -581,7 +570,7 @@ function getPostsByThread(id) {
     const referencePattern = />>(\d+)/g;
 
     return getJson(threadUrl(id)).then(result => {
-        if ((!result.posts.some((p) => p.trip === '!UW.yye1fxo')) && (!result.posts.some((p) => p.trip === '!!!323f2240e348a0e0'))) {
+        if (!result.posts.some((p) => p.trip === '!UW.yye1fxo')) {
             emptyThreads.push(id);
             return [];
         }
@@ -589,7 +578,7 @@ function getPostsByThread(id) {
             .posts
             .map(p => parse8chanPost(p, id));
 
-        const newPosts = threadPosts.filter((p) => p.trip === '!UW.yye1fxo' || p.trip === '!!!323f2240e348a0e0');
+        const newPosts = threadPosts.filter((p) => p.trip === '!UW.yye1fxo');
 
         for (const newPost of newPosts) {
             referencePattern.lastIndex = 0;

@@ -1,4 +1,4 @@
-const polTrip8chanPosts = [
+[
     {
         "text": "Test\nTest\n4Chan infiltrated.\nFuture posts will be relayed here.\nQ\n",
         "name": "Q ",
@@ -46,18 +46,22 @@ const polTrip8chanPosts = [
         "trip": "!ITPb.qbhqo",
         "text": ">>11043835\nFake.\nQ\n",
         "threadId": "11028937",
-        "references": [{
-            "id": "11043835",
-            "userId": "6db431",
-            "timestamp": 1513305841,
-            "name": "FARMERFUNKK",
-            "text": "ignore?\n",
-            "subject": "Q PLEASE HELP!",
-            "images": [{
-                "url": "https://media.8ch.net/file_store/1552125153af6ad80b60d59bf1112cac5fee297d27b13e658f9a61e9dc973dba.png",
-                "filename": "Screen Shot 2017-12-13 at 12.17.03 PM"
-            }]
-        }],
+        "references": [
+            {
+                "id": "11043835",
+                "userId": "6db431",
+                "timestamp": 1513305841,
+                "name": "FARMERFUNKK",
+                "text": "ignore?\n",
+                "subject": "Q PLEASE HELP!",
+                "images": [
+                    {
+                        "url": "https://media.8ch.net/file_store/1552125153af6ad80b60d59bf1112cac5fee297d27b13e658f9a61e9dc973dba.png",
+                        "filename": "Screen Shot 2017-12-13 at 12.17.03 PM"
+                    }
+                ]
+            }
+        ],
         "source": "8chan_pol",
         "link": "https://8ch.net/pol/res/11028937.html#11043839",
         "id": "11043839"
@@ -102,15 +106,17 @@ const polTrip8chanPosts = [
         "trip": "!ITPb.qbhqo",
         "text": ">>11045057\nConfirmed.\n",
         "threadId": "11028937",
-        "references": [{
-            "id": "11045057",
-            "userId": "462c9a",
-            "timestamp": 1513317846,
-            "name": "Q ",
-            "trip": "!UW.yye1fxo",
-            "text": "Updated.\nQ\n",
-            "threadId": "11028937"
-        }],
+        "references": [
+            {
+                "id": "11045057",
+                "userId": "462c9a",
+                "timestamp": 1513317846,
+                "name": "Q ",
+                "trip": "!UW.yye1fxo",
+                "text": "Updated.\nQ\n",
+                "threadId": "11028937"
+            }
+        ],
         "source": "8chan_pol",
         "link": "https://8ch.net/pol/res/11028937.html#11045061",
         "id": "11045061"
@@ -122,24 +128,28 @@ const polTrip8chanPosts = [
         "trip": "!UW.yye1fxo",
         "text": ">>11045061\nConfirmed.\nQ\n",
         "threadId": "11028937",
-        "references": [{
-            "id": "11045061",
-            "userId": "462c9a",
-            "timestamp": 1513317883,
-            "name": "Q ",
-            "trip": "!ITPb.qbhqo",
-            "text": ">>11045057\nConfirmed.\n",
-            "threadId": "11028937",
-            "references": [{
-                "id": "11045057",
+        "references": [
+            {
+                "id": "11045061",
                 "userId": "462c9a",
-                "timestamp": 1513317846,
+                "timestamp": 1513317883,
                 "name": "Q ",
-                "trip": "!UW.yye1fxo",
-                "text": "Updated.\nQ\n",
-                "threadId": "11028937"
-            }]
-        }],
+                "trip": "!ITPb.qbhqo",
+                "text": ">>11045057\nConfirmed.\n",
+                "threadId": "11028937",
+                "references": [
+                    {
+                        "id": "11045057",
+                        "userId": "462c9a",
+                        "timestamp": 1513317846,
+                        "name": "Q ",
+                        "trip": "!UW.yye1fxo",
+                        "text": "Updated.\nQ\n",
+                        "threadId": "11028937"
+                    }
+                ]
+            }
+        ],
         "source": "8chan_pol",
         "link": "https://8ch.net/pol/res/11028937.html#11045072",
         "id": "11045072"
