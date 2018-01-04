@@ -5,7 +5,7 @@ const legend = {
     'Anon': 'Anonymous',
     'ANTIFA': 'Anti-Fascists, Soros backed domestic terrorists',
     'BIS': 'Bank for International Settlements',
-    'BO': 'Barack Obama',
+    'BO': '[Barack Obama] or [Board Owner]',
     'BOD': 'Board of Directors',
     'BP': 'Border Patrol',
     'CF': 'Clinton Foundation',
