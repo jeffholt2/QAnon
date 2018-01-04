@@ -6,16 +6,15 @@ function main() {
 
 function initSearch(items, searchElement) {
     searchElement.oninput = () => {
-        const value = searchElement.value;
+        const terms = searchElement.value.toLowerCase().split(' ');
 
-        const keywordInText = value === value.toLowerCase()
-            ? text => text.toLowerCase().includes(value)
-            : text => text.includes(value);
+        const keywordInText = (term, text) => text.toLowerCase().includes(term);
+        const itemContains = item => term => (item.headline && keywordInText(term, item.headline))
+            || (item.description && keywordInText(term, item.description))
+            || keywordInText(term, item.url);
 
         const ids = items
-            .filter(item => (item.headline && keywordInText(item.headline))
-                || (item.description && keywordInText(item.description))
-                || keywordInText(item.url))
+            .filter(item => terms.every(itemContains(item)))
             .map(p => p.id);
 
         applyFilter(ids);
@@ -96,11 +95,13 @@ const html = {
     news: item => {
         return `
         <article>
+        <button onclick="this.parentElement.hidden = true">✖</button>
         <a href="${item.url}" target="_blank" class="row">
           <div>${ifExists(item.imageUrl, html.img)}</div>
           <div class="stretch">
             <h2>${item.headline}</h2>
-            <p class="text">${item.description}</p>
+            ${ifExists(item.description, x => `
+            <p class="text">${x}</p>`)}
           </div>
           </a>
         <small>${getHostname(item.url)}</small>

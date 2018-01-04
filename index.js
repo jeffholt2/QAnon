@@ -66,12 +66,11 @@ function initSearch() {
             .map(p => p.id);
 
         applyFilter(ids);
-        if (value == '') 
+        if (value == '')
             setParams({});
-        else 
+        else
             setParams({q: value});
-        }
-    ;
+    };
 
     const postLines = posts
         .filter(p => p.text)
@@ -86,9 +85,9 @@ function initSearch() {
     const result = {};
     for (const post of postLines) {
         for (const line of post.lines) {
-            if (line == '') 
+            if (line == '')
                 continue;
-            if (!result[line]) 
+            if (!result[line])
                 result[line] = new Set();
             result[line].add(post.id);
         }
@@ -154,7 +153,7 @@ function render(posts) {
 
 const html = {
     post: (post) => {
-        if (!post) 
+        if (!post)
             return '';
         const date = new Date(post.timestamp * 1000);
         const edate = new Date(post.edited * 1000);
@@ -187,7 +186,7 @@ const html = {
         <div class="text">${addHighlights(post.text)}</div>`;
     },
     img: (image) => {
-        if (!image) 
+        if (!image)
             return '';
         const url = localImgSrc(image.url);
         return `<a href="${url}" target="_blank">
@@ -530,10 +529,11 @@ function getPostsByThread(id) {
     });
 }
 
-// NEWS
-
 function parse8chanPost(post, threadId) {
-    const getImgUrl = (chanPost) => ({url: `https://media.8ch.net/file_store/${chanPost.tim}${chanPost.ext}`, filename: chanPost.filename});
+    const getImgUrl = (chanPost) => ({
+        url: `https://media.8ch.net/file_store/${chanPost.tim}${chanPost.ext}`,
+        filename: chanPost.filename
+    });
 
     const keyMap = {
         'no': 'id',
@@ -552,18 +552,18 @@ function parse8chanPost(post, threadId) {
         'images': []
     };
     for (const key of Object.keys(keyMap)) {
-        if (post[key] == null) 
+        if (post[key] == null)
             continue;
-        
-        if (key == 'tim') 
+
+        if (key == 'tim')
             newPost['images'].push(getImgUrl(post));
-        else if (key == 'extra_files') 
+        else if (key == 'extra_files')
             newPost['images'].push(...post[key].map(getImgUrl));
-        else if (key == 'no') 
+        else if (key == 'no')
             newPost[keyMap[key]] = post[key].toString();
-        else if (key == 'com') 
+        else if (key == 'com')
             newPost[keyMap[key]] = cleanHtmlText(post[key]);
-        else 
+        else
             newPost[keyMap[key]] = post[key];
     }
     newPost.source = '8chan_cbts';
@@ -592,9 +592,9 @@ function cleanHtmlText(htmlText) {
 
 const ifElement = (selector, callback) => {
     const element = document.querySelector(selector);
-    if (element) 
+    if (element)
         return callback(element);
-    };
+};
 
 function copyAnswers() {
     ifElement('article.selected', selectedArticle => {
