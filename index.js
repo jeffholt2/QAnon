@@ -140,20 +140,6 @@ function render(posts) {
     selectAnswers(null);
 }
 
-function readableColour($bg) {
-    const r = parseInt($bg.substr(0, 2), 16);
-    const g = parseInt($bg.substr(2, 2), 16);
-    const b = parseInt($bg.substr(4, 2), 16);
-
-    const contrast = Math.sqrt(r * r * .241 + g * g * .691 + b * b * .068);
-
-    if (contrast > 130) {
-        return '000000';
-    } else {
-        return 'FFFFFF';
-    }
-}
-
 const html = {
     post: (post) => {
         if (!post)
@@ -176,7 +162,7 @@ const html = {
             <span class="email" title="email">${x}</span>`)}
 
             ${ifExists(post.userId, x => `
-            <span class="userid" title="userid" style="background-color: #${x}; padding: 0px 5px; border-radius: 8px; color: #${readableColour(x)}">ID: ${x}</span>`)}
+            <span class="userid" title="userid">ID: ${x}</span>`)}
 
             <a href="${post.link}" target="_blank">${post.id}</a>
 
@@ -237,7 +223,7 @@ const legendPattern = new RegExp(`([^a-zA-Z])(${Object.keys(legend).join('|')})(
 
 const addHighlights = text => !text
     ? ''
-    : text.replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`).replace(/(https?:\/\/[.\w\/?\-=&]+)/g, (match) => match.endsWith('.jpg')
+    : text.replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`).replace(/(https?:\/\/[.\w\/?\-=&#]+)/g, (match) => match.endsWith('.jpg')
         ? `<img src="${match}" alt="image">`
         : `<a href="${match}" target="_blank">${match}</a>`).replace(/(\[[^[]+])/g, (match) => `<strong>${match}</strong>`).replace(legendPattern, (match, p1, p2, p3, o, s) => `${p1}<abbr title="${legend[p2]}">${p2}</abbr>${p3}`);
 
