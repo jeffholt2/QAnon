@@ -47,7 +47,7 @@ function main() {
             render(posts);
         });
     toggleAnswers();
-    // checkForNewPosts();
+    checkForNewPosts();
 }
 
 function initSearch() {
@@ -151,6 +151,20 @@ function render(posts) {
     selectAnswers(null);
 }
 
+function readableColour($bg) {
+    const r = parseInt($bg.substr(0, 2), 16);
+    const g = parseInt($bg.substr(2, 2), 16);
+    const b = parseInt($bg.substr(4, 2), 16);
+
+    const contrast = Math.sqrt(r * r * .241 + g * g * .691 + b * b * .068);
+
+    if (contrast > 130) {
+        return '000000';
+    } else {
+        return 'FFFFFF';
+    }
+}
+
 const html = {
     post: (post) => {
         if (!post)
@@ -173,7 +187,7 @@ const html = {
             <span class="email" title="email">${x}</span>`)}
 
             ${ifExists(post.userId, x => `
-            <span class="userid" title="userid">ID: ${x}</span>`)}
+            <span class="userid" title="userid" style="background-color: #${x}; padding: 0px 5px; border-radius: 8px; color: #${readableColour(x)}">ID: ${x}</span>`)}
 
             <a href="${post.link}" target="_blank">${post.id}</a>
 
@@ -244,7 +258,7 @@ let emptyThreads;
 
 function checkForNewPosts() {
     emptyThreads = [];
-    statusElement.textContent = 'fetching new posts...';
+    statusElement.textContent = 'Fetching new posts...';
 
     const alreadyParsedIds = [
         // empty threads on cbts
@@ -329,6 +343,7 @@ function checkForNewPosts() {
         1346,
         1362,
         1367,
+        137599,
         1391,
         1398,
         1401,
@@ -339,15 +354,74 @@ function checkForNewPosts() {
         16027,
         170,
         17818,
+        179249,
         1816,
+        189017,
+        189803,
+        190713,
+        191551,
+        192328,
+        193168,
+        194037,
+        194481,
+        195676,
+        196398,
+        197248,
+        198079,
+        198893,
+        199643,
         2,
+        200536,
+        201328,
+        202103,
+        202933,
+        203759,
+        204603,
+        205441,
+        206199,
+        206957,
         20714,
+        207776,
         2078,
+        208626,
+        209455,
+        210279,
+        211963,
+        212207,
+        212756,
+        213638,
+        215269,
+        216046,
+        216868,
+        217739,
+        218484,
+        219376,
         2198,
+        220000,
+        220949,
+        221756,
         2219,
+        222379,
+        223363,
+        224195,
+        224932,
+        225808,
+        226561,
+        227400,
+        228142,
+        228986,
         2300,
+        231428,
+        232225,
+        232997,
         23344,
+        233716,
+        233781,
+        234709,
         23518,
+        235487,
+        236275,
+        237102,
         2422,
         26613,
         28157,
@@ -463,6 +537,7 @@ function checkForNewPosts() {
         128973,
         129812,
         13366,
+        150923,
         16943,
         33992,
         59130,
@@ -506,7 +581,7 @@ function getPostsByThread(id) {
     const referencePattern = />>(\d+)/g;
 
     return getJson(threadUrl(id)).then(result => {
-        if (!result.posts.some((p) => p.trip === '!UW.yye1fxo')) {
+        if ((!result.posts.some((p) => p.trip === '!UW.yye1fxo')) && (!result.posts.some((p) => p.trip === '!!!323f2240e348a0e0'))) {
             emptyThreads.push(id);
             return [];
         }
@@ -514,7 +589,7 @@ function getPostsByThread(id) {
             .posts
             .map(p => parse8chanPost(p, id));
 
-        const newPosts = threadPosts.filter((p) => p.trip === '!UW.yye1fxo');
+        const newPosts = threadPosts.filter((p) => p.trip === '!UW.yye1fxo' || p.trip === '!!!323f2240e348a0e0');
 
         for (const newPost of newPosts) {
             referencePattern.lastIndex = 0;
@@ -524,7 +599,7 @@ function getPostsByThread(id) {
                 newPost.references = threadPosts.filter((p) => p.id == referenceId);
             }
         }
-        console.log(`added ${newPosts.length} thread ${id}`);
+        console.log(`added ${newPosts.length} posts from thread ${id}`);
         return newPosts;
     });
 }
@@ -544,7 +619,8 @@ function parse8chanPost(post, threadId) {
         'email': 'email',
         'trip': 'trip',
         'com': 'text',
-        'sub': 'subject'
+        'sub': 'subject',
+        'last_modified': 'edited'
         // 'filename': 'fileName',
     };
 
@@ -565,7 +641,7 @@ function parse8chanPost(post, threadId) {
             newPost[keyMap[key]] = cleanHtmlText(post[key]);
         else
             newPost[keyMap[key]] = post[key];
-    }
+        }
     newPost.source = '8chan_cbts';
     newPost.link = `https://8ch.net/cbts/res/${threadId}.html#${newPost.id}`;
     newPost.threadId = '' + threadId;

@@ -99,7 +99,7 @@ const cbtsTrip8chanPosts = [{
         "images": [],
         "threadId": "158326",
         "source": "8chan_cbts",
-        "link": "https://8ch.net//cbts/res/158326.html#158980"
+        "link": "https://8ch.net/cbts/res/158326.html#158980"
     }]
 }, {
     "id": "158980",
@@ -114,7 +114,7 @@ const cbtsTrip8chanPosts = [{
     "images": [],
     "threadId": "158326",
     "source": "8chan_cbts",
-    "link": "https://8ch.net//cbts/res/158326.html#158980",
+    "link": "https://8ch.net/cbts/res/158326.html#158980",
     "references": [{
         "id": "158952",
         "userId": "3bf429",
@@ -164,7 +164,7 @@ const cbtsTrip8chanPosts = [{
     "images": [],
     "threadId": "158326",
     "source": "8chan_cbts",
-    "link": "https://8ch.net//cbts/res/158326.html#158439"
+    "link": "https://8ch.net/cbts/res/158326.html#158439"
 }, {
     "id": "158261",
     "userId": "479ca5",
@@ -1250,11 +1250,11 @@ const cbtsTrip8chanPosts = [{
     "name": "Q",
     "email": null,
     "trip": "!UW.yye1fxo",
-    "text": "Trip working on on device only.\nMultiple devices necessary.\nQ\n",
+    "text": "Trip working on one device only.\nMultiple devices necessary.\nQ\n",
     "images": [],
     "threadId": "142880",
     "source": "8chan_cbts",
-    "link": "https://8ch.net//cbts/res/142880.html#143034"
+    "link": "https://8ch.net/cbts/res/142880.html#143034"
 }, {
     "id": "143025",
     "userId": "deb9fa",
