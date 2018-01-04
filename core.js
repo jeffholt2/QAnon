@@ -1,6 +1,7 @@
+let debug = window.location.hostname === 'localhost';
+
 const getJson = url => fetch(url).then(response => response.json());
 const getLocalJson = filename => fetch(`data/${filename}.json`,{credentials: 'same-origin'}).then(r => r.json());
-
 const pipe = (...funcs) => i => funcs.reduce((p, c) => c(p), i);
 
 const forAll = (items, htmlCallback) => items && items instanceof Array ? items.map(htmlCallback).join('') : '';

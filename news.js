@@ -101,7 +101,8 @@ const html = {
     news: item => {
         return `
         <article>
-        <button onclick="this.parentElement.hidden = true">✖</button>
+        ${ifExists(debug, x => `
+        <button onclick="this.parentElement.hidden = true">✖</button>`)}
         <a href="${item.url}" target="_blank" class="row">
           <div>${ifExists(item.imageUrl, html.img)}</div>
           <div class="stretch">
