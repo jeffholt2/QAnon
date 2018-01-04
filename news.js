@@ -1,7 +1,13 @@
+let news = [];
 function main() {
-    news.sort((a, b) => b.date - a.date);
-    initNews(news);
-    initSearch(news, document.querySelector('input[type=search]'));
+    Promise.all([
+        getLocalJson('news'),
+    ]).then(values => {
+        news = values[0];
+        news.sort((a, b) => b.date - a.date);
+        initNews(news);
+        initSearch(news, document.querySelector('input[type=search]'));
+    });
 }
 
 function initSearch(items, searchElement) {
