@@ -16,23 +16,20 @@ function main() {
 
     statusElement = document.querySelector('#status');
 
-
     Promise.all([
-        getLocalJson('polNonTrip4chanPosts'),
-        getLocalJson('polTrip4chanPosts'),
+        getLocalJson('pol4chanPosts'),
         getLocalJson('polTrip8chanPosts'),
         getLocalJson('cbtsNonTrip8chanPosts'),
         getLocalJson('cbtsTrip8chanPosts'),
+        getLocalJson('answers'),
     ]).then(values => {
-        posts = values.reduce((p, c) => p.concat(c), []);
+        posts = [].concat(values[0]).concat(values[1]).concat(values[2]).concat(values[3]);
+        answers = values[4];
         posts.sort((a, b) => b.timestamp - a.timestamp);
         postOrder.push(...(posts.map(p => p.id).reverse()));
 
+        render(posts);
         loadLocalAnswers();
-        getLocalJson('answers').then(json => {
-            answers = json;
-            render(posts);
-        });
     });
 
     toggleAnswers();
@@ -221,11 +218,16 @@ const localImgSrc = src => 'data/images/' + src
 
 const legendPattern = new RegExp(`([^a-zA-Z])(${Object.keys(legend).join('|')})([^a-zA-Z])`, 'g');
 
-const addHighlights = text => !text
-    ? ''
-    : text.replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`).replace(/(https?:\/\/[.\w\/?\-=&#]+)/g, (match) => match.endsWith('.jpg')
-        ? `<img src="${match}" alt="image">`
-        : `<a href="${match}" target="_blank">${match}</a>`).replace(/(\[[^[]+])/g, (match) => `<strong>${match}</strong>`).replace(legendPattern, (match, p1, p2, p3, o, s) => `${p1}<abbr title="${legend[p2]}">${p2}</abbr>${p3}`);
+const addHighlights = text => !text ?
+    '' :
+    text
+        .replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`)
+        .replace(/(https?:\/\/[.\w\/?\-=&#]+)/g, (match) =>
+            match.endsWith('.jpg') ?
+                `<img src="${match}" alt="image">` :
+                `<a href="${match}" target="_blank">${match}</a>`)
+        .replace(/(\[[^[]+])/g, (match) => `<strong>${match}</strong>`)
+        .replace(legendPattern, (match, p1, p2, p3, o, s) => `${p1}<abbr title="${legend[p2]}">${p2}</abbr>${p3}`);
 
 // PARSE 8chan
 
@@ -616,7 +618,7 @@ function parse8chanPost(post, threadId) {
             newPost[keyMap[key]] = cleanHtmlText(post[key]);
         else
             newPost[keyMap[key]] = post[key];
-        }
+    }
     newPost.source = '8chan_cbts';
     newPost.link = `https://8ch.net/cbts/res/${threadId}.html#${newPost.id}`;
     newPost.threadId = '' + threadId;
