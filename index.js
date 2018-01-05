@@ -30,10 +30,10 @@ function main() {
 
         render(posts);
         loadLocalAnswers();
+        checkForNewPosts();
     });
 
     toggleAnswers();
-    // checkForNewPosts();
 }
 
 function initSearch() {
@@ -237,305 +237,23 @@ function checkForNewPosts() {
     emptyThreads = [];
     statusElement.textContent = 'Fetching new posts...';
 
-    const alreadyParsedIds = [
-        // empty threads on cbts
-        1,
-        10,
-        100321,
-        100323,
-        101124,
-        101287,
-        101840,
-        102142,
-        102804,
-        103753,
-        104552,
-        104641,
-        105464,
-        10556,
-        106,
-        106285,
-        106323,
-        107138,
-        107604,
-        108000,
-        108024,
-        108027,
-        108272,
-        108873,
-        109005,
-        109881,
-        110385,
-        110721,
-        110901,
-        111180,
-        111656,
-        112573,
-        113439,
-        114171,
-        114324,
-        115178,
-        115185,
-        115972,
-        116764,
-        116784,
-        117654,
-        117776,
-        117841,
-        118462,
-        119253,
-        120048,
-        120430,
-        122424,
-        123275,
-        123576,
-        123887,
-        124167,
-        124958,
-        125046,
-        125574,
-        125725,
-        125940,
-        126728,
-        127080,
-        127436,
-        127679,
-        12832,
-        129379,
-        129902,
-        130219,
-        130309,
-        130524,
-        131416,
-        131488,
-        131736,
-        131800,
-        131837,
-        132229,
-        132230,
-        1327,
-        132899,
-        133015,
-        1342,
-        1346,
-        1362,
-        1367,
-        137599,
-        1391,
-        1398,
-        1401,
-        1411,
-        15139,
-        15577,
-        15984,
-        16027,
-        170,
-        17818,
-        179249,
-        1816,
-        189017,
-        189803,
-        190713,
-        191551,
-        192328,
-        193168,
-        194037,
-        194481,
-        195676,
-        196398,
-        197248,
-        198079,
-        198893,
-        199643,
-        2,
-        200536,
-        201328,
-        202103,
-        202933,
-        203759,
-        204603,
-        205441,
-        206199,
-        206957,
-        20714,
-        207776,
-        2078,
-        208626,
-        209455,
-        210279,
-        211963,
-        212207,
-        212756,
-        213638,
-        215269,
-        216046,
-        216868,
-        217739,
-        218484,
-        219376,
-        2198,
-        220000,
-        220949,
-        221756,
-        2219,
-        222379,
-        223363,
-        224195,
-        224932,
-        225808,
-        226561,
-        227400,
-        228142,
-        228986,
-        2300,
-        231428,
-        232225,
-        232997,
-        23344,
-        233716,
-        233781,
-        234709,
-        23518,
-        235487,
-        236275,
-        237102,
-        2422,
-        26613,
-        28157,
-        28513,
-        290,
-        29994,
-        3102,
-        3163,
-        33405,
-        33454,
-        33706,
-        3418,
-        36791,
-        37441,
-        3952,
-        40157,
-        4136,
-        41581,
-        41855,
-        42055,
-        423,
-        4249,
-        4409,
-        44295,
-        44375,
-        4485,
-        45109,
-        49767,
-        49883,
-        4992,
-        50043,
-        50429,
-        52820,
-        55606,
-        56075,
-        56328,
-        56876,
-        58319,
-        59035,
-        59512,
-        5984,
-        59853,
-        60804,
-        61078,
-        61105,
-        61534,
-        61621,
-        61918,
-        62050,
-        62353,
-        62562,
-        62673,
-        62689,
-        64254,
-        64707,
-        65108,
-        6535,
-        65503,
-        65635,
-        65909,
-        66796,
-        66888,
-        67649,
-        68564,
-        69526,
-        69603,
-        70260,
-        71064,
-        71941,
-        74186,
-        74559,
-        75329,
-        76158,
-        77001,
-        77040,
-        7705,
-        77824,
-        78661,
-        79481,
-        80329,
-        80370,
-        80960,
-        82175,
-        83064,
-        84471,
-        848,
-        8515,
-        86074,
-        8629,
-        86934,
-        87855,
-        88704,
-        89588,
-        90491,
-        91369,
-        91987,
-        93785,
-        94250,
-        94465,
-        94829,
-        95429,
-        96273,
-        97068,
-        97899,
-        98535,
-        99590,
-
-        // threads already in cbtsTrip8chanPosts.js
-        120902,
-        121693,
-        126564,
-        128199,
-        128973,
-        129812,
-        13366,
-        150923,
-        16943,
-        33992,
-        59130,
-        59969,
-        63405,
-        69407,
-        72735,
-        73615,
-        74470,
-        81218,
-        82147,
-        85308,
-        92197,
-        93014
-    ];
+    const alreadyParsedIds = Array.from(new Set(posts.map(p => parseInt(p.threadId)))).concat(
+        [137599, 247343, 246560, 245761, 244990, 244182, 243430, 242672, 212207, 241840, 241052, 240259, 239485, 237911, 237102, 236275, 235487, 234709, 233716, 232997, 232225, 231428, 230592, 228142, 228986, 226561, 227400, 225808, 224932, 224195, 223363, 222379, 221756, 220949, 220000, 219376, 218484, 217739, 216046, 216868, 215269, 213638, 212756, 211963, 210279, 209455, 208626, 207776, 179249, 206957, 206199, 205441, 204603, 203759, 202933, 202103, 201328, 194037, 200536, 199643, 198893, 198079, 197248, 196398, 195676, 194481, 193168, 192328, 191551, 190713, 189803, 189017, 106]
+    );
+    console.log(alreadyParsedIds);
 
     const catalogUrl = 'https://8ch.net/cbts/catalog.json';
 
     getJson(catalogUrl).then(threads => {
 
-        const newThreadIds = threads.reduce((p, e) => p.concat(e.threads), []).filter((p) => p.sub.includes('CBTS')).map((p) => p.no).filter((id) => !alreadyParsedIds.includes(id));
+        const allThreadIds = threads
+            .reduce((p, e) => p.concat(e.threads), [])
+            .filter((p) => p.sub.includes('CBTS'))
+            .map((p) => p.no);
+        console.log(allThreadIds);
+        const newThreadIds = allThreadIds
+            .filter((id) => !alreadyParsedIds.includes(id));
+        console.log(newThreadIds);
 
         Promise
             .all(newThreadIds.map(getPostsByThread))
@@ -562,9 +280,7 @@ function getPostsByThread(id) {
             emptyThreads.push(id);
             return [];
         }
-        const threadPosts = result
-            .posts
-            .map(p => parse8chanPost(p, id));
+        const threadPosts = result.posts.map(parse8chanPost);
 
         const newPosts = threadPosts.filter((p) => p.trip === '!UW.yye1fxo');
 
@@ -581,49 +297,27 @@ function getPostsByThread(id) {
     });
 }
 
-function parse8chanPost(post, threadId) {
+function parse8chanPost(post) {
     const getImgUrl = (chanPost) => ({
         url: `https://media.8ch.net/file_store/${chanPost.tim}${chanPost.ext}`,
         filename: chanPost.filename
     });
-
-    const keyMap = {
-        'no': 'id',
-        'id': 'userId',
-        'time': 'timestamp',
-        'title': 'title',
-        'name': 'name',
-        'email': 'email',
-        'trip': 'trip',
-        'com': 'text',
-        'sub': 'subject',
-        'last_modified': 'edited'
-        // 'filename': 'fileName',
+    return {
+        images: post.tim ? [getImgUrl(post)] : [],
+        id: post.no.toString(),
+        userId: post.id,
+        timestamp: post.time,
+        title: post.title,
+        name: post.name,
+        email: post.email,
+        trip: post.trip,
+        text: cleanHtmlText(post.com),
+        subject: post.sub,
+        source: '8chan_cbts',
+        link: `https://8ch.net/cbts/res/${post.resto}.html#${post.no}`,
+        threadId: post.resto.toString(),
+        isNew: true,
     };
-
-    const newPost = {
-        'images': []
-    };
-    for (const key of Object.keys(keyMap)) {
-        if (post[key] == null)
-            continue;
-
-        if (key == 'tim')
-            newPost['images'].push(getImgUrl(post));
-        else if (key == 'extra_files')
-            newPost['images'].push(...post[key].map(getImgUrl));
-        else if (key == 'no')
-            newPost[keyMap[key]] = post[key].toString();
-        else if (key == 'com')
-            newPost[keyMap[key]] = cleanHtmlText(post[key]);
-        else
-            newPost[keyMap[key]] = post[key];
-    }
-    newPost.source = '8chan_cbts';
-    newPost.link = `https://8ch.net/cbts/res/${threadId}.html#${newPost.id}`;
-    newPost.threadId = '' + threadId;
-    newPost.isNew = true;
-    return newPost;
 }
 
 function cleanHtmlText(htmlText) {
