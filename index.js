@@ -239,11 +239,11 @@ function checkForNewPosts() {
     statusElement.textContent = 'Fetching new posts...';
 
     const alreadyParsedIds = Array.from(new Set(posts.map(p => parseInt(p.threadId)))).concat(
-        [137599, 247343, 246560, 245761, 244990, 244182, 243430, 242672, 212207, 241840, 241052, 240259, 239485, 237911, 237102, 236275, 235487, 234709, 233716, 232997, 232225, 231428, 230592, 228142, 228986, 226561, 227400, 225808, 224932, 224195, 223363, 222379, 221756, 220949, 220000, 219376, 218484, 217739, 216046, 216868, 215269, 213638, 212756, 211963, 210279, 209455, 208626, 207776, 179249, 206957, 206199, 205441, 204603, 203759, 202933, 202103, 201328, 194037, 200536, 199643, 198893, 198079, 197248, 196398, 195676, 194481, 193168, 192328, 191551, 190713, 189803, 189017, 106]
+        []
     );
     console.log(alreadyParsedIds);
 
-    const catalogUrl = 'https://8ch.net/cbts/catalog.json';
+    const catalogUrl = 'https://8ch.net/thestorm/catalog.json';
 
     getJson(catalogUrl).then(threads => {
 
@@ -314,8 +314,8 @@ function parse8chanPost(post) {
         trip: post.trip,
         text: cleanHtmlText(post.com),
         subject: post.sub,
-        source: '8chan_cbts',
-        link: `https://8ch.net/cbts/res/${post.resto}.html#${post.no}`,
+        source: '8chan_thestorm',
+        link: `https://8ch.net/thestorm/res/${post.resto}.html#${post.no}`,
         threadId: post.resto.toString(),
         isNew: true,
     };
@@ -482,16 +482,3 @@ function getAllAnswersUpdate() {
 window.addEventListener('beforeunload', storeLocalAnswers);
 
 document.addEventListener('DOMContentLoaded', main, false);
-
-/*
- ▶Anonymous  01/06/18 (Sat) 00:31:54 942782 No.251666
->>251626
-Q can you confirm the # posts earlier today were you and were from normal IP? if you do , we know board comp'd
- */
-
-/*
-The Board Owner !!!ZTY0ZjM1M2UwOWM5  01/06/18 (Sat) 00:33:48 381b06 No.251685>>251699 >>251703 >>251718 >>251737 >>251829
-
->>251665
-
-Not Q. Q's second trip has been cracked as I thought it might be.*/
