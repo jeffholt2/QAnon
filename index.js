@@ -17,14 +17,15 @@ function main() {
     statusElement = document.querySelector('#status');
 
     Promise.all([
+        getLocalJson('answers'),
         getLocalJson('pol4chanPosts'),
         getLocalJson('polTrip8chanPosts'),
         getLocalJson('cbtsNonTrip8chanPosts'),
         getLocalJson('cbtsTrip8chanPosts'),
-        getLocalJson('answers'),
+        getLocalJson('thestormTrip8chanPosts'),
     ]).then(values => {
-        posts = [].concat(values[0]).concat(values[1]).concat(values[2]).concat(values[3]);
-        answers = values[4];
+        answers = values[0];
+        posts = [].concat(values[1]).concat(values[2]).concat(values[3]).concat(values[4]).concat(values[5]);
         posts.sort((a, b) => b.timestamp - a.timestamp);
         postOrder.push(...(posts.map(p => p.id).reverse()));
 

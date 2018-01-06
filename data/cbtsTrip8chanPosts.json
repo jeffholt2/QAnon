@@ -6153,7 +6153,7 @@
 
   {
     "id": "248746",
-    "timestamp": 1515212898,
+    "timestamp": 1515186743,
     "userId": "403375",
     "threadId": "251305",
     "title": null,
@@ -6167,7 +6167,7 @@
   },
   {
     "id": "251705",
-    "timestamp": 1515188198,
+    "timestamp": 1515213392,
     "userId": "403375",
     "threadId": "251305",
     "title": null,
@@ -6177,7 +6177,21 @@
     "text": ">>251666\nPosted 4-5 times today.\nWe anticipated life to be short on each platform given verification and message spreading rapidly.\nWe can limit outside exposure but cannot protect against internals.\nBO please advise IP reading and verify site still safe/auth.\nQ",
     "images": [],
     "source": "8chan_cbts",
-    "link": "https://8ch.net/cbts/res/251305.html#251705"
+    "link": "https://8ch.net/cbts/res/251305.html#251705",
+    "references": [{
+      "id": "251666",
+      "timestamp": 1515213392,
+      "userId": "942782",
+      "threadId": "251305",
+      "title": null,
+      "name": "Anonymous",
+      "trip": "!UW.yye1fxo",
+      "email": null,
+      "text": ">>251626\nQ can you confirm the # posts earlier today were you and were from normal IP? if you do , we know board comp'd",
+      "images": [],
+      "source": "8chan_cbts",
+      "link": "https://8ch.net/cbts/res/251305.html#251666"
+    }]
   },
   {
     "id": "251731",
@@ -6191,7 +6205,23 @@
     "text": ">>251685\nFalse.\nDid they get to you?\nBoard compromised.\nQ",
     "images": [],
     "source": "8chan_cbts",
-    "link": "https://8ch.net/cbts/res/251305.html#251731"
+    "link": "https://8ch.net/cbts/res/251305.html#251731",
+    "references": [
+      {
+        "id": "251685",
+        "timestamp": 1515216828,
+        "userId": "381b06",
+        "threadId": "251305",
+        "title": null,
+        "name": "The Board Owner",
+        "trip": "!!!ZTY0ZjM1M2UwOWM5",
+        "email": null,
+        "text": ">>251665\n\nNot Q. Q's second trip has been cracked as I thought it might be.",
+        "images": [],
+        "source": "8chan_cbts",
+        "link": "https://8ch.net/cbts/res/251305.html#251685"
+      }
+    ]
   },
   {
     "id": "251826",
