@@ -481,3 +481,16 @@ function getAllAnswersUpdate() {
 window.addEventListener('beforeunload', storeLocalAnswers);
 
 document.addEventListener('DOMContentLoaded', main, false);
+
+/*
+ ▶Anonymous  01/06/18 (Sat) 00:31:54 942782 No.251666
+>>251626
+Q can you confirm the # posts earlier today were you and were from normal IP? if you do , we know board comp'd
+ */
+
+/*
+The Board Owner !!!ZTY0ZjM1M2UwOWM5  01/06/18 (Sat) 00:33:48 381b06 No.251685>>251699 >>251703 >>251718 >>251737 >>251829
+
+>>251665
+
+Not Q. Q's second trip has been cracked as I thought it might be.*/
