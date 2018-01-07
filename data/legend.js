@@ -51,6 +51,7 @@ const legend = {
     'MM': 'Media Matters',
     'MS-13': 'Latino Drug Cartel',
     'MSM': 'Mainstream Media',
+    'MW': 'Maxine Waters',
     'NG': 'National Guard',
     'NK': 'North Korea, also NORK, NOK, NOKO',
     'NP': 'Non-Profit',
