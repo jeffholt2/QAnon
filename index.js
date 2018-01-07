@@ -22,16 +22,22 @@ function main() {
         getLocalJson('polTrip8chanPosts'),
         getLocalJson('cbtsNonTrip8chanPosts'),
         getLocalJson('cbtsTrip8chanPosts'),
-        getLocalJson('thestormTrip8chanPosts'),
+        getLocalJson('thestormTrip8chanPosts')
+
     ]).then(values => {
         answers = values[0];
-        posts = [].concat(values[1]).concat(values[2]).concat(values[3]).concat(values[4]).concat(values[5]);
+        posts = []
+            .concat(values[1])
+            .concat(values[2])
+            .concat(values[3])
+            .concat(values[4])
+            .concat(values[5]);
         posts.sort((a, b) => b.timestamp - a.timestamp);
         postOrder.push(...(posts.map(p => p.id).reverse()));
 
         render(posts);
         loadLocalAnswers();
-        // checkForNewPosts();
+        checkForNewPosts();
     });
 
     toggleAnswers();
@@ -53,11 +59,12 @@ function initSearch() {
             .map(p => p.id);
 
         applyFilter(ids);
-        if (value == '')
+        if (value == '') 
             setParams({});
-        else
+        else 
             setParams({q: value});
-    };
+        }
+    ;
 
     const postLines = posts
         .filter(p => p.text)
@@ -72,9 +79,9 @@ function initSearch() {
     const result = {};
     for (const post of postLines) {
         for (const line of post.lines) {
-            if (line == '')
+            if (line == '') 
                 continue;
-            if (!result[line])
+            if (!result[line]) 
                 result[line] = new Set();
             result[line].add(post.id);
         }
@@ -140,7 +147,7 @@ function render(posts) {
 
 const html = {
     post: (post) => {
-        if (!post)
+        if (!post) 
             return '';
         const date = new Date(post.timestamp * 1000);
         const edate = new Date(post.edited * 1000);
@@ -173,7 +180,7 @@ const html = {
         <div class="text">${addHighlights(post.text)}</div>`;
     },
     img: (image) => {
-        if (!image)
+        if (!image) 
             return '';
         const url = localImgSrc(image.url);
         return `<a href="${url}" target="_blank">
@@ -192,7 +199,7 @@ function dateToHtmlElement(date) {
 
 function postToHtmlElement(post) {
     const element = tag.fromString(`
-        <article id="post${post.id}" class="source_${post.source} ${ifExists(post.timestampDeletion, () => 'deleted')}">
+        <article id="post${post.id}" class="source_${post.source}${ifExists(post.timestampDeletion, () => ' deleted')}">
           <button onclick="selectAnswers(${post.id})" class="answers ${answerButtonClass(post.id)}">answers</button>
           <span class="counter">${postOrder.indexOf(post.id) + 1}</span>
           ${forAll(post.references, x => `
@@ -219,16 +226,11 @@ const localImgSrc = src => 'data/images/' + src
 
 const legendPattern = new RegExp(`([^a-zA-Z])(${Object.keys(legend).join('|')})([^a-zA-Z])`, 'g');
 
-const addHighlights = text => !text ?
-    '' :
-    text
-        .replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`)
-        .replace(/(https?:\/\/[.\w\/?\-=&#]+)/g, (match) =>
-            match.endsWith('.jpg') ?
-                `<img src="${match}" alt="image">` :
-                `<a href="${match}" target="_blank">${match}</a>`)
-        .replace(/(\[[^[]+])/g, (match) => `<strong>${match}</strong>`)
-        .replace(legendPattern, (match, p1, p2, p3, o, s) => `${p1}<abbr title="${legend[p2]}">${p2}</abbr>${p3}`);
+const addHighlights = text => !text
+    ? ''
+    : text.replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`).replace(/(https?:\/\/[.\w\/?\-=&#]+)/g, (match) => match.endsWith('.jpg')
+        ? `<img src="${match}" alt="image">`
+        : `<a href="${match}" target="_blank">${match}</a>`).replace(/(\[[^[]+])/g, (match) => `<strong>${match}</strong>`).replace(legendPattern, (match, p1, p2, p3, o, s) => `${p1}<abbr title="${legend[p2]}">${p2}</abbr>${p3}`);
 
 // PARSE 8chan
 
@@ -238,26 +240,22 @@ function checkForNewPosts() {
     emptyThreads = [];
     statusElement.textContent = 'Fetching new posts...';
 
-    const alreadyParsedIds = Array.from(new Set(posts.map(p => parseInt(p.threadId)))).concat(
-        []
-    );
+    const alreadyParsedIds = Array
+        .from(new Set(posts.map(p => parseInt(p.threadId))))
+        .concat([3995, 6376, 7827]);
     console.log(alreadyParsedIds);
 
     const catalogUrl = 'https://8ch.net/thestorm/catalog.json';
 
     getJson(catalogUrl).then(threads => {
 
-        const allThreadIds = threads
-            .reduce((p, e) => p.concat(e.threads), [])
-            .filter((p) => p.sub.includes('CBTS'))
-            .map((p) => p.no);
+        const allThreadIds = threads.reduce((p, e) => p.concat(e.threads), []).map((p) => p.no);
         console.log(allThreadIds);
-        const newThreadIds = allThreadIds
-            .filter((id) => !alreadyParsedIds.includes(id));
+        const newThreadIds = allThreadIds.filter((id) => !alreadyParsedIds.includes(id));
         console.log(newThreadIds);
 
         Promise
-            .all(newThreadIds.map(getPostsByThread))
+            .all(newThreadIds.map(getLivePostsByThread))
             .then(result => {
                 const newPosts = result.reduce((p, e) => p.concat(e), []);
 
@@ -272,8 +270,8 @@ function checkForNewPosts() {
     });
 }
 
-function getPostsByThread(id) {
-    const threadUrl = (id) => `https://8ch.net/cbts/res/${id}.json`;
+function getLivePostsByThread(id) {
+    const threadUrl = (id) => `https://8ch.net/thestorm/res/${id}.json`;
     const referencePattern = />>(\d+)/g;
 
     return getJson(threadUrl(id)).then(result => {
@@ -281,8 +279,11 @@ function getPostsByThread(id) {
             emptyThreads.push(id);
             return [];
         }
-        const threadPosts = result.posts.map(parse8chanPost);
+        const threadPosts = result
+            .posts
+            .map(parseLive8chanPost);
 
+        // !UW.yye1fxo has not been compromised at this time
         const newPosts = threadPosts.filter((p) => p.trip === '!UW.yye1fxo');
 
         for (const newPost of newPosts) {
@@ -298,14 +299,15 @@ function getPostsByThread(id) {
     });
 }
 
-function parse8chanPost(post) {
-    const getImgUrl = (chanPost) => ({
-        url: `https://media.8ch.net/file_store/${chanPost.tim}${chanPost.ext}`,
-        filename: chanPost.filename
-    });
+function parseLive8chanPost(post) {
+    const getImgUrl = (chanPost) => ({url: `https://media.8ch.net/file_store/${chanPost.tim}${chanPost.ext}`, filename: chanPost.filename});
     return {
-        images: post.tim ? [getImgUrl(post)] : [],
-        id: post.no.toString(),
+        images: post.tim
+            ? [getImgUrl(post)]
+            : [],
+        id: post
+            .no
+            .toString(),
         userId: post.id,
         timestamp: post.time,
         title: post.title,
@@ -314,10 +316,12 @@ function parse8chanPost(post) {
         trip: post.trip,
         text: cleanHtmlText(post.com),
         subject: post.sub,
-        source: '8chan_thestorm',
+        source: '8chan_thestorm live',
         link: `https://8ch.net/thestorm/res/${post.resto}.html#${post.no}`,
-        threadId: post.resto.toString(),
-        isNew: true,
+        threadId: post
+            .resto
+            .toString(),
+        isNew: true
     };
 }
 
@@ -340,9 +344,9 @@ function cleanHtmlText(htmlText) {
 
 const ifElement = (selector, callback) => {
     const element = document.querySelector(selector);
-    if (element)
+    if (element) 
         return callback(element);
-};
+    };
 
 function copyAnswers() {
     ifElement('article.selected', selectedArticle => {
@@ -482,3 +486,16 @@ function getAllAnswersUpdate() {
 window.addEventListener('beforeunload', storeLocalAnswers);
 
 document.addEventListener('DOMContentLoaded', main, false);
+
+/*
+C!Odemonkey.  ☯ 8chan Administrator 01/06/18 (Sat) 16:19:37 1fb886 No.6196
+A summary of events.
+>January 2
+I added super secure tripcodes. /cbts/ BO secures one.
+>January 5 (Japan time)
+Someone on /sudo/ pointed out that super secure tripcodes excluded capital letters, a big oversight which I fixed. I changed the code and announced it just on /sudo/. /cbts/ BO doesn't know about it and continues using the tripcode he secured, but because the code changed, his tripcode also changed - this led to confusion.
+Q comes back and posts on /cbts/ normally. Post history is not the same, IP hash is not the same. /cbts/ BO assumes, incorrectly, that this is not Q, even though there are a number of reasons why a post history may start from zero, including changing VPN providers, changing VPN IP locations, using cellular data, resetting your modem, posting from a different location, using a different IP (hotel, restaurant etc.).
+/cbts/ BO deletes those posts.
+Then, Q goes to /pol/, where he is banned, and then /thestorm/, where he asks for verification.
+Around 12 hours later, I confirm it is actually Q using his verified tripcode (still uncracked) on /thestorm/.
+*/
