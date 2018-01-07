@@ -31,7 +31,7 @@ function main() {
 
         render(posts);
         loadLocalAnswers();
-        checkForNewPosts();
+        // checkForNewPosts();
     });
 
     toggleAnswers();
