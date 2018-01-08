@@ -138,7 +138,9 @@ function notify(text) {
         element.hidden = false;
         element.textContent = text;
     } else {
-        element.hidden = true;
+        setTimeout(() => {
+            element.hidden = true;
+        }, 5000);
     }
 }
 
@@ -147,12 +149,12 @@ function notify(text) {
 function render(items) {
     const container = document.querySelector('main');
     let lastDate = new Date(items[0].timestamp * 1000);
-    lastDate.setHours(0,0,0,0);
+    lastDate.setHours(0, 0, 0, 0);
     let subContainer = tag('section');
     container.appendChild(tag.fromString(html.date(lastDate)));
     for (const item of items) {
         const date = new Date(item.timestamp * 1000);
-        date.setHours(0,0,0,0);
+        date.setHours(0, 0, 0, 0);
         if (lastDate.getTime() !== date.getTime()) {
             lastDate = date;
             container.appendChild(subContainer);
@@ -209,27 +211,27 @@ const html = {
             <span class="edited" title="${edate.toISOString()}">Last edited at ${formatDate(edate)}, ${formatTime(edate)}</span>`)}
         </header>
 
-        ${forAll(post.images, html.img)}
+        ${forAll(post.images, (i) => post.isNew ? html.img(i) : html.img(withLocalUrl(i)))}
 
         <div class="text">${addHighlights(post.text)}</div>`;
     },
     img: (image) => {
         if (!image)
             return '';
-        const url = localImgSrc(image.url);
-        return `<a href="${url}" target="_blank">
+        return `<a href="${image.url}" target="_blank">
           ${ifExists(image.filename, x => `
           <span class="filename" title="file name">${x}</span>`)}
-          <img src="${url}" class="contain" width="300" height="300">
+          <img src="${image.url}" class="contain" width="300" height="300">
         </a>`;
     }
 };
-
 const answerButtonClass = (postId) => editedAnswers[postId]
     ? 'edited'
     : answers[postId] && answers[postId].length
         ? ''
         : 'empty';
+
+const withLocalUrl = (image) => ({filename: image.filename, url: localImgSrc(image.url)});
 
 const localImgSrc = src => 'data/images/' + src
     .split('/')
@@ -248,22 +250,24 @@ const addHighlights = text => !text
 
 // PARSE 8chan
 
-let emptyThreads;
-
 function checkForNewPosts() {
-    emptyThreads = [];
     notify('Searching for new posts');
 
-    const alreadyParsedIds = Array
-        .from(new Set(posts.map(p => parseInt(p.threadId))))
+    const alreadyParsedIds = Array.from(new Set(posts.filter(p => p.source = '8chan_thestorm')))
+        .map(p => parseInt(p.threadId))
         .concat([3995, 6376, 7827]);
 
     const catalogUrl = 'https://8ch.net/thestorm/catalog.json';
 
-    getJson(catalogUrl).then(threads => {
+    getJson(catalogUrl).then(response => {
 
-        const allThreadIds = threads.reduce((p, e) => p.concat(e.threads), []).map((p) => p.no);
-        const newThreadIds = allThreadIds.filter((id) => !alreadyParsedIds.includes(id));
+        const threads = response.reduce((p, e) => p.concat(e.threads), []);
+        const theStormGeneralThreadIds = threads
+            .filter(p => p.sub && p.sub.toLowerCase()
+            .includes('the storm'))
+            .map((p) => p.no);
+
+        const newThreadIds = theStormGeneralThreadIds.filter((id) => !alreadyParsedIds.includes(id));
         console.log(newThreadIds);
 
         Promise
@@ -271,8 +275,6 @@ function checkForNewPosts() {
             .then(result => {
                 const newPosts = result.reduce((p, e) => p.concat(e), []);
                 notify(`found ${newPosts.length} new posts`);
-
-                console.log(`empty threads\n${emptyThreads}`);
 
                 newPosts.sort((a, b) => b['timestamp'] - a['timestamp']);
                 posts.unshift(...newPosts);
@@ -289,7 +291,6 @@ function getLivePostsByThread(id) {
 
     return getJson(threadUrl(id)).then(result => {
         if (!result.posts.some((p) => p.trip === '!UW.yye1fxo')) {
-            emptyThreads.push(id);
             return [];
         }
         const threadPosts = result
@@ -313,17 +314,15 @@ function getLivePostsByThread(id) {
 }
 
 function parseLive8chanPost(post) {
-    const getImgUrl = (chanPost) => ({
+    const getImages = (chanPost) => [{
         url: `https://media.8ch.net/file_store/${chanPost.tim}${chanPost.ext}`,
         filename: chanPost.filename
-    });
+    }].concat(chanPost.extra_files);
     return {
         images: post.tim
-            ? [getImgUrl(post)]
+            ? getImages(post)
             : [],
-        id: post
-            .no
-            .toString(),
+        id: post.no.toString(),
         userId: post.id,
         timestamp: post.time,
         title: post.title,
@@ -334,9 +333,7 @@ function parseLive8chanPost(post) {
         subject: post.sub,
         source: '8chan_thestorm live',
         link: `https://8ch.net/thestorm/res/${post.resto}.html#${post.no}`,
-        threadId: post
-            .resto
-            .toString(),
+        threadId: post.resto.toString(),
         isNew: true
     };
 }

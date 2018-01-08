@@ -39,7 +39,23 @@
     "images": [],
     "threadId": "13567",
     "source": "8chan_thestorm",
-    "link": "https://8ch.net//thestorm/res/13567.html#13615"
+    "link": "https://8ch.net//thestorm/res/13567.html#13615",
+    "references": [
+      {
+        "id": "13534",
+        "userId": "206942",
+        "timestamp": 1515313637,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": ">>13497\nThen we need to dig Planned Parenthood.  Whatever they're doing to babies/fetal tissue might be more sinister than ever imagined!",
+        "images": [],
+        "threadId": "12744",
+        "source": "8chan_thestorm",
+        "link": "https://8ch.net//thestorm/res/12744.html#13534"
+      }
+    ]
   },
   {
     "id": "13668",
