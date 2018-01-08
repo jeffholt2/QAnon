@@ -110,16 +110,16 @@ q {
   margin-right: 20px;
 }
 .source_4chan_pol {
-  border-left: 2px solid #a0d9af;
+  border-left: 4px solid #a0d9af;
 }
 .source_8chan_pol {
-  border-left: 2px solid #bda8ff;
+  border-left: 4px solid #bda8ff;
 }
 .source_8chan_cbts {
-  border-left: 2px solid #a8e5ff;
+  border-left: 4px solid #a8e5ff;
 }
 .source_8chan_thestorm {
-  border-left: 2px solid #ffd4a8;
+  border-left: 4px solid #ffd4a8;
 }
 .deleted {
   background-color: #ecc6c6;
