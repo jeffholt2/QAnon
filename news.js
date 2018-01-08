@@ -52,7 +52,7 @@ function initSearch(items, searchElement) {
 }
 
 function initNews(newsItems) {
-    const container = document.querySelector('#news');
+    const container = document.querySelector('main');
     let lastDate = new Date(newsItems[0].date);
     let newsContainer = tag('section');
     container.appendChild(tag.fromString(html.date(lastDate)));

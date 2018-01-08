@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="lib/simplemde.min.css">
   <script src="lib/simplemde.min.js"></script>
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="core.css">
+  <link rel="stylesheet" href="index.css">
   <script src="data/legend.js"></script>
   <script src="core.js"></script>
   <script src="index.js"></script>
@@ -25,9 +26,6 @@
       <datalist id="hints"></datalist>
       <span id="count"></span>
     </div>
-    <div>
-      <div id="status"></div>
-    </div>
     <div class="stretch row">
       <button onclick="toggleDialog()">🎅</button>
     </div>
@@ -38,8 +36,8 @@
       <button onclick="toggleAnswers()">Toggle Answers</button>
     </div>
   </header>
-  <main>
-    <section></section>
+  <div class="row">
+    <main></main>
     <aside>
       <div class="row">
         <h1 class="stretch">Answers</h1>
@@ -51,9 +49,11 @@
         <textarea id="answers"></textarea>
       </div>
     </aside>
-  </main>
+  </div>
+  <div id="notification" hidden></div>
   <div class="dialog">
     <div>
+      <button onclick="toggleDialog()">X</button>
       <p>If you'd like to buy me a beer or a little Christmas present for my effort, you can donate some Bitcoins to the following
         address:
       </p>
@@ -65,11 +65,11 @@
       </p>
 
       <pre>
-🌟🇺🇸🇺🇸🇺🇸🌟🇺🇸🇺🇸🌟🌟🇺🇸🌟🇺🇸🌟🇺🇸🇺🇸🌟🇺🇸🇺🇸🌟🇺🇸🇺🇸🌟🌟
-🌟🌟🇺🇸🌟🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟
-🌟🌟🇺🇸🌟🌟🇺🇸🇺🇸🌟🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🇺🇸🌟🌟
-🌟🌟🇺🇸🌟🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🇺🇸🌟🌟🌟🇺🇸🌟🇺🇸🌟🌟🌟
-🌟🌟🇺🇸🌟🌟🇺🇸🌟🇺🇸🌟🇺🇸🇺🇸🇺🇸🌟🇺🇸🌟🌟🌟🇺🇸🌟🇺🇸🌟🌟🌟
+🌟🌅🌅🌅🌟🌅🌅🌟🌟🌅🌟🌅🌟🌅🌅🌟🌅🌅🌟🌅🌅🌟🌟
+🌟🌟🌅🌟🌟🌅🌟🌅🌟🌅🌟🌅🌟🌅🌟🌅🌟🌅🌟🌅🌟🌅🌟
+🌟🌟🌅🌟🌟🌅🌅🌟🌟🌅🌟🌅🌟🌅🌟🌅🌟🌅🌟🌅🌅🌟🌟
+🌟🌟🌅🌟🌟🌅🌟🌅🌟🌅🌟🌅🌟🌅🌟🌟🌟🌅🌟🌅🌟🌟🌟
+🌟🌟🌅🌟🌟🌅🌟🌅🌟🌅🌅🌅🌟🌅🌟🌟🌟🌅🌟🌅🌟🌟🌟
   </pre>
     </div>
   </div>

@@ -1,42 +1,3 @@
-html {
-  box-sizing: border-box;
-  font-family: sans-serif;
-  line-height: 1.15;
-  font-size: 14px;
-}
-body {
-  margin: 0;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
-body > header {
-  height: 30px;
-  padding: 10px;
-  background-color: white;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-  z-index: 10;
-  position: relative;
-}
-body > header input[type=search] {
-  padding: 5px 10px;
-  border-radius: 100px;
-  border: 1px solid #e6e6e6;
-  width: 250px;
-}
-main {
-  display: flex;
-}
-section {
-  overflow-y: auto;
-  height: calc(100vh - 50px);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  width: calc(100% - 400px);
-  justify-content: space-around;
-}
 aside {
   width: 440px;
   background-color: #f6fafd;
@@ -67,30 +28,33 @@ article {
   margin: 5px 0 5px 30px;
   width: 400px;
 }
-article.selected {
-  background-color: #f6fafd;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-}
-.text {
-  max-width: 100%;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-.row {
-  display: flex;
-}
-.stretch {
-  flex: 1;
-}
-a[target=_blank]::after {
-  content: '→';
-}
-time {
+article time {
   font-size: smaller;
   color: #808080;
 }
-img {
-  max-width: 100%;
+article header {
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+article header > * {
+  margin-right: 10px;
+  display: inline-block;
+}
+article .name {
+  font-weight: bold;
+}
+article .email {
+  color: #a71113;
+}
+article .filename {
+  display: block;
+  font-size: smaller;
+  color: grey;
+}
+article.selected {
+  background-color: #f6fafd;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
 }
 blockquote {
   margin: 0 0 10px;
@@ -103,11 +67,6 @@ q {
 .counter {
   position: absolute;
   left: -30px;
-}
-.contain {
-  object-fit: contain;
-  background: #f2f2f2;
-  margin-right: 20px;
 }
 .source_4chan_pol {
   border-left: 4px solid #a0d9af;
@@ -123,37 +82,6 @@ q {
 }
 .deleted {
   background-color: #ecc6c6;
-}
-article header {
-  margin-bottom: 10px;
-  display: flex;
-  flex-wrap: wrap;
-}
-article header > * {
-  margin-right: 10px;
-  display: inline-block;
-}
-.name {
-  font-weight: bold;
-}
-.email {
-  color: #a71113;
-}
-.filename {
-  display: block;
-  font-size: smaller;
-  color: grey;
-}
-button {
-  background-color: white;
-  padding: 6px 20px;
-  line-height: 10px;
-  border: 3px solid #f2f2f2;
-  text-transform: uppercase;
-  transition: all .5s;
-}
-button:active {
-  background-color: #f2f2f2;
 }
 article button.answers {
   position: absolute;
@@ -175,8 +103,12 @@ textarea {
   width: 1px;
   opacity: 0;
 }
-#status {
+#notification {
   padding: 5px 10px;
+  position: fixed;
+  color: white;
+  background-color: #545454;
+  bottom: 0;
 }
 /*
 EDITOR
@@ -224,6 +156,9 @@ Answers toggle
 @media screen and (max-width: 480px) {
   [type=search] {
     width: 250px;
+  }
+  article {
+    width: 295px;
   }
 }
 .answers-disabled .answers {

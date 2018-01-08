@@ -1,5 +1,4 @@
 let posts = [];
-let statusElement;
 let editor;
 let answers = {};
 let editedAnswers = {};
@@ -13,8 +12,6 @@ function main() {
     if (!editor.isPreviewActive()) {
         editor.togglePreview();
     }
-
-    statusElement = document.querySelector('#status');
 
     Promise.all([
         getLocalJson('answers'),
@@ -36,7 +33,10 @@ function main() {
         postOrder.push(...(posts.map(p => p.id).reverse()));
 
         render(posts);
+        initSearch();
+
         loadLocalAnswers();
+        selectAnswers(null);
         checkForNewPosts();
     });
 
@@ -59,12 +59,11 @@ function initSearch() {
             .map(p => p.id);
 
         applyFilter(ids);
-        if (value == '') 
+        if (value == '')
             setParams({});
-        else 
+        else
             setParams({q: value});
-        }
-    ;
+    };
 
     const postLines = posts
         .filter(p => p.text)
@@ -79,9 +78,9 @@ function initSearch() {
     const result = {};
     for (const post of postLines) {
         for (const line of post.lines) {
-            if (line == '') 
+            if (line == '')
                 continue;
-            if (!result[line]) 
+            if (!result[line])
                 result[line] = new Set();
             result[line].add(post.id);
         }
@@ -133,27 +132,62 @@ function toggleDialog() {
         .toggle('open');
 }
 
+function notify(text) {
+    const element = document.querySelector('#notification');
+    if (text) {
+        element.hidden = false;
+        element.textContent = text;
+    } else {
+        element.hidden = true;
+    }
+}
+
 // RENDERING
 
-function render(posts) {
-    const container = document.querySelector('section');
-    container.innerHTML = '';
-    for (const post of posts) {
-        container.appendChild(postToHtmlElement(post));
+function render(items) {
+    const container = document.querySelector('main');
+    let lastDate = new Date(items[0].timestamp * 1000);
+    lastDate.setHours(0,0,0,0);
+    let subContainer = tag('section');
+    container.appendChild(tag.fromString(html.date(lastDate)));
+    for (const item of items) {
+        const date = new Date(item.timestamp * 1000);
+        date.setHours(0,0,0,0);
+        if (lastDate.getTime() !== date.getTime()) {
+            lastDate = date;
+            container.appendChild(subContainer);
+            container.appendChild(tag.fromString(html.date(date)));
+            subContainer = tag('section');
+        }
+        const element = tag.fromString(html.postWithReplies(item));
+        element.item = item;
+        subContainer.appendChild(element);
     }
-    initSearch();
-    selectAnswers(null);
+    container.appendChild(subContainer);
 }
 
 const html = {
+    postWithReplies: (post) => {
+        return `
+        <article id="post${post.id}" class="source_${post.source}${ifExists(post.timestampDeletion, () => ' deleted')}">
+          <button onclick="selectAnswers(${post.id})" class="answers ${answerButtonClass(post.id)}">answers</button>
+          <span class="counter">${postOrder.indexOf(post.id) + 1}</span>
+          ${forAll(post.references, x => `
+          <blockquote id="post${post.id}">${html.post(x)}</blockquote>`)}
+          ${html.post(post)}
+        </article>`;
+    },
+    date: (date) => {
+        return `<h3 class="center sticky"><time datetime="${date.toISOString()}">${formatDate(date)}</time></h3>`
+    },
     post: (post) => {
-        if (!post) 
+        if (!post)
             return '';
         const date = new Date(post.timestamp * 1000);
         const edate = new Date(post.edited * 1000);
         return `
         <header>
-            <time datetime="${date.toISOString()}">${formatDate(date)}, ${formatTime(date)}</time>
+            <time datetime="${date.toISOString()}">${formatTime(date)}</time>
 
             ${ifExists(post.subject, x => `
             <span class="subject" title="subject">${x}</span>`)}
@@ -180,7 +214,7 @@ const html = {
         <div class="text">${addHighlights(post.text)}</div>`;
     },
     img: (image) => {
-        if (!image) 
+        if (!image)
             return '';
         const url = localImgSrc(image.url);
         return `<a href="${url}" target="_blank">
@@ -191,34 +225,11 @@ const html = {
     }
 };
 
-function dateToHtmlElement(date) {
-    return tag.fromString(`
-    <div><time datetime="${date.toISOString()}">${formatDate(date)}</time></div>
-    `);
-}
-
-function postToHtmlElement(post) {
-    const element = tag.fromString(`
-        <article id="post${post.id}" class="source_${post.source}${ifExists(post.timestampDeletion, () => ' deleted')}">
-          <button onclick="selectAnswers(${post.id})" class="answers ${answerButtonClass(post.id)}">answers</button>
-          <span class="counter">${postOrder.indexOf(post.id) + 1}</span>
-          ${forAll(post.references, x => `
-          <blockquote id="post${post.id}">${html.post(x)}</blockquote>`)}
-          ${html.post(post)}
-        </article>`);
-    element.item = post;
-    return element;
-}
-
 const answerButtonClass = (postId) => editedAnswers[postId]
     ? 'edited'
     : answers[postId] && answers[postId].length
         ? ''
         : 'empty';
-
-// 1,10925,12916,13092,13215,59684,93287,93312,14795558,14797863,147023341,14802
-// 9633,148029962,148031295,148032210,148032910,148033178,148033932,148136656,14
-// 7 6689362
 
 const localImgSrc = src => 'data/images/' + src
     .split('/')
@@ -228,9 +239,12 @@ const legendPattern = new RegExp(`([^a-zA-Z])(${Object.keys(legend).join('|')})(
 
 const addHighlights = text => !text
     ? ''
-    : text.replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`).replace(/(https?:\/\/[.\w\/?\-=&#]+)/g, (match) => match.endsWith('.jpg')
-        ? `<img src="${match}" alt="image">`
-        : `<a href="${match}" target="_blank">${match}</a>`).replace(/(\[[^[]+])/g, (match) => `<strong>${match}</strong>`).replace(legendPattern, (match, p1, p2, p3, o, s) => `${p1}<abbr title="${legend[p2]}">${p2}</abbr>${p3}`);
+    : text.replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`)
+        .replace(/(https?:\/\/[.\w\/?\-=&#]+)/g, (match) => match.endsWith('.jpg')
+            ? `<img src="${match}" alt="image">`
+            : `<a href="${match}" target="_blank">${match}</a>`)
+        .replace(/(\[[^[]+])/g, (match) => `<strong>${match}</strong>`)
+        .replace(legendPattern, (match, p1, p2, p3, o, s) => `${p1}<abbr title="${legend[p2]}">${p2}</abbr>${p3}`);
 
 // PARSE 8chan
 
@@ -238,19 +252,17 @@ let emptyThreads;
 
 function checkForNewPosts() {
     emptyThreads = [];
-    statusElement.textContent = 'Fetching new posts...';
+    notify('Searching for new posts');
 
     const alreadyParsedIds = Array
         .from(new Set(posts.map(p => parseInt(p.threadId))))
         .concat([3995, 6376, 7827]);
-    console.log(alreadyParsedIds);
 
     const catalogUrl = 'https://8ch.net/thestorm/catalog.json';
 
     getJson(catalogUrl).then(threads => {
 
         const allThreadIds = threads.reduce((p, e) => p.concat(e.threads), []).map((p) => p.no);
-        console.log(allThreadIds);
         const newThreadIds = allThreadIds.filter((id) => !alreadyParsedIds.includes(id));
         console.log(newThreadIds);
 
@@ -258,6 +270,7 @@ function checkForNewPosts() {
             .all(newThreadIds.map(getLivePostsByThread))
             .then(result => {
                 const newPosts = result.reduce((p, e) => p.concat(e), []);
+                notify(`found ${newPosts.length} new posts`);
 
                 console.log(`empty threads\n${emptyThreads}`);
 
@@ -265,7 +278,7 @@ function checkForNewPosts() {
                 posts.unshift(...newPosts);
                 postOrder.push(...(newPosts.map(p => p.id).reverse()));
                 render(posts);
-                statusElement.textContent = '';
+                notify(null);
             });
     });
 }
@@ -300,7 +313,10 @@ function getLivePostsByThread(id) {
 }
 
 function parseLive8chanPost(post) {
-    const getImgUrl = (chanPost) => ({url: `https://media.8ch.net/file_store/${chanPost.tim}${chanPost.ext}`, filename: chanPost.filename});
+    const getImgUrl = (chanPost) => ({
+        url: `https://media.8ch.net/file_store/${chanPost.tim}${chanPost.ext}`,
+        filename: chanPost.filename
+    });
     return {
         images: post.tim
             ? [getImgUrl(post)]
@@ -340,13 +356,13 @@ function cleanHtmlText(htmlText) {
         .replace(paragraphPattern, (m, p1) => `${p1}\n`);
 }
 
-//////////////////// html functions //////////////////
+//////////////////// answers functions //////////////////
 
 const ifElement = (selector, callback) => {
     const element = document.querySelector(selector);
-    if (element) 
+    if (element)
         return callback(element);
-    };
+};
 
 function copyAnswers() {
     ifElement('article.selected', selectedArticle => {
