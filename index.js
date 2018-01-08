@@ -140,7 +140,7 @@ function notify(text) {
     } else {
         setTimeout(() => {
             element.hidden = true;
-        }, 5000);
+        }, 3000);
     }
 }
 
@@ -148,6 +148,7 @@ function notify(text) {
 
 function render(items) {
     const container = document.querySelector('main');
+    container.innerHTML = '';
     let lastDate = new Date(items[0].timestamp * 1000);
     lastDate.setHours(0, 0, 0, 0);
     let subContainer = tag('section');
@@ -206,6 +207,8 @@ const html = {
             <span class="userid" title="userid">ID: ${x}</span>`)}
 
             <a href="${post.link}" target="_blank">${post.id}</a>
+            
+            ${ifExists(post.isNew, () => `<span class="new">NEW</span>`)}
 
             ${ifExists(post.edited, x => `
             <span class="edited" title="${edate.toISOString()}">Last edited at ${formatDate(edate)}, ${formatTime(edate)}</span>`)}

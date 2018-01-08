@@ -47,6 +47,10 @@ article .name {
 article .email {
   color: #a71113;
 }
+article .new {
+  font-weight: bold;
+  color: #299e35;
+}
 article .filename {
   display: block;
   font-size: smaller;
@@ -103,12 +107,14 @@ textarea {
   width: 1px;
   opacity: 0;
 }
-#notification {
-  padding: 5px 10px;
+#fixed-bottom {
   position: fixed;
+  bottom: 0;
+}
+#fixed-bottom #notification {
+  padding: 5px 10px;
   color: white;
   background-color: #545454;
-  bottom: 0;
 }
 /*
 EDITOR

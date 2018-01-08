@@ -59,6 +59,10 @@ article {
   .email {
     color: hsl(359, 82%, 36%);
   }
+  .new {
+    font-weight:bold;
+    color: #299e35;
+  }
   .filename {
     display: block;
     font-size: smaller;
@@ -121,12 +125,15 @@ textarea {
   width: 1px;
   opacity:0;
 }
-#notification {
-  padding: 5px 10px;
-  position: fixed;
-  color: white;
-  background-color: hsl(0, 0%, 33%);
-  bottom: 0;
+#fixed-bottom {
+    position: fixed;
+    bottom: 0;
+
+  #notification {
+    padding: 5px 10px;
+    color: white;
+    background-color: hsl(0, 0%, 33%);
+  }
 }
 
 /*
