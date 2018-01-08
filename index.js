@@ -113,9 +113,11 @@ function applyFilter(ids) {
             element.hidden = true;
         }
     }
-    document
-        .querySelector('#count')
-        .textContent = `${count}`;
+    document.querySelector('#count').textContent = `${count}`;
+    for(const h3 of Array.from(document.querySelectorAll('main .sticky'))) {
+        const section = h3.nextElementSibling;
+        h3.hidden = Array.from(section.children).every(c => c.hidden);
+    }
 }
 
 function toggleAnswers() {
