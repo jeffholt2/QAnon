@@ -265,9 +265,10 @@ function checkForNewPosts() {
 
     for(const board of boards) {
 
-        const alreadyParsedIds = [];
-            // Array.from(new Set(posts.filter(p => p.source = '8chan_greatawakening')))
-            // .map(p => parseInt(p.threadId));
+        const alreadyParsedIds =
+            Array.from(new Set(posts.filter(p => !p.isNew && p.source == `8chan_${board}`)))
+            .map(p => parseInt(p.threadId));
+
 
 
         const catalogUrl = `https://8ch.net/${board}/catalog.json`;
@@ -275,12 +276,10 @@ function checkForNewPosts() {
         getJson(catalogUrl).then(response => {
 
             const threads = response.reduce((p, e) => p.concat(e.threads), []);
-            const theStormGeneralThreadIds = threads
-                .filter(p => p.sub && p.sub.toLowerCase()
-                .includes('the storm'))
+            const threadIds = threads
                 .map((p) => p.no);
 
-            const newThreadIds = theStormGeneralThreadIds.filter((id) => !alreadyParsedIds.includes(id));
+            const newThreadIds = threadIds.filter((id) => !alreadyParsedIds.includes(id));
             console.log(newThreadIds);
 
             Promise
@@ -311,7 +310,7 @@ function getLivePostsByThread(id, board) {
         }
         const threadPosts = result
             .posts
-            .map(p => parseLive8chanPost(board));
+            .map(p => parseLive8chanPost(p, board));
 
         // !UW.yye1fxo has not been compromised at this time
         const newPosts = threadPosts.filter((p) => p.trip === '!UW.yye1fxo');
