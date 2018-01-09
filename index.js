@@ -20,7 +20,8 @@ function main() {
         getLocalJson('cbtsNonTrip8chanPosts'),
         getLocalJson('cbtsTrip8chanPosts'),
         getLocalJson('thestormTrip8chanPosts'),
-        getLocalJson('greatawakeningTrip8chanPosts')
+        getLocalJson('greatawakeningTrip8chanPosts'),
+        getLocalJson('qresearchTrip8chanPosts')
 
     ]).then(values => {
         answers = values[0];
@@ -30,7 +31,8 @@ function main() {
             .concat(values[3])
             .concat(values[4])
             .concat(values[5])
-            .concat(values[6]);
+            .concat(values[6])
+            .concat(values[7]);
         posts.sort((a, b) => b.timestamp - a.timestamp);
         postOrder.push(...(posts.map(p => p.id).reverse()));
 
@@ -258,42 +260,49 @@ const addHighlights = text => !text
 // PARSE 8chan
 
 function checkForNewPosts() {
-    notify('Searching for new posts');
+    const boards = ['greatawakening', 'qresearch'];
+    notify(`Searching for new posts`);
 
-    const alreadyParsedIds = [];
-        // Array.from(new Set(posts.filter(p => p.source = '8chan_greatawakening')))
-        // .map(p => parseInt(p.threadId));
+    for(const board of boards) {
 
-    const catalogUrl = 'https://8ch.net/greatawakening/catalog.json';
+        const alreadyParsedIds = [];
+            // Array.from(new Set(posts.filter(p => p.source = '8chan_greatawakening')))
+            // .map(p => parseInt(p.threadId));
 
-    getJson(catalogUrl).then(response => {
 
-        const threads = response.reduce((p, e) => p.concat(e.threads), []);
-        const theStormGeneralThreadIds = threads
-            .filter(p => p.sub && p.sub.toLowerCase()
-            .includes('the storm'))
-            .map((p) => p.no);
+        const catalogUrl = `https://8ch.net/${board}/catalog.json`;
 
-        const newThreadIds = theStormGeneralThreadIds.filter((id) => !alreadyParsedIds.includes(id));
-        console.log(newThreadIds);
+        getJson(catalogUrl).then(response => {
 
-        Promise
-            .all(newThreadIds.map(getLivePostsByThread))
-            .then(result => {
-                const newPosts = result.reduce((p, e) => p.concat(e), []);
-                notify(`found ${newPosts.length} new posts`);
+            const threads = response.reduce((p, e) => p.concat(e.threads), []);
+            const theStormGeneralThreadIds = threads
+                .filter(p => p.sub && p.sub.toLowerCase()
+                .includes('the storm'))
+                .map((p) => p.no);
 
-                newPosts.sort((a, b) => b['timestamp'] - a['timestamp']);
-                posts.unshift(...newPosts);
-                postOrder.push(...(newPosts.map(p => p.id).reverse()));
-                render(posts);
-                notify(null);
-            });
-    });
+            const newThreadIds = theStormGeneralThreadIds.filter((id) => !alreadyParsedIds.includes(id));
+            console.log(newThreadIds);
+
+            Promise
+                .all(newThreadIds.map(id => getLivePostsByThread(id, board)))
+                .then(result => {
+                    const newPosts = result.reduce((p, e) => p.concat(e), []);
+                    notify(`found ${newPosts.length} new posts on ${board}`);
+
+                    newPosts.sort((a, b) => b['timestamp'] - a['timestamp']);
+                    posts.unshift(...newPosts);
+                    postOrder.push(...(newPosts.map(p => p.id).reverse()));
+                    render(posts);
+                    notify(null);
+                });
+        });
+    }
+
 }
 
-function getLivePostsByThread(id) {
-    const threadUrl = (id) => `https://8ch.net/greatawakening/res/${id}.json`;
+function getLivePostsByThread(id, board) {
+
+    const threadUrl = (id) => `https://8ch.net/${board}/res/${id}.json`;
     const referencePattern = />>(\d+)/g;
 
     return getJson(threadUrl(id)).then(result => {
@@ -302,7 +311,7 @@ function getLivePostsByThread(id) {
         }
         const threadPosts = result
             .posts
-            .map(parseLive8chanPost);
+            .map(p => parseLive8chanPost(board));
 
         // !UW.yye1fxo has not been compromised at this time
         const newPosts = threadPosts.filter((p) => p.trip === '!UW.yye1fxo');
@@ -320,7 +329,7 @@ function getLivePostsByThread(id) {
     });
 }
 
-function parseLive8chanPost(post) {
+function parseLive8chanPost(post, board) {
     const getImages = (chanPost) => [{
         url: `https://media.8ch.net/file_store/${chanPost.tim}${chanPost.ext}`,
         filename: chanPost.filename
@@ -338,8 +347,8 @@ function parseLive8chanPost(post) {
         trip: post.trip,
         text: cleanHtmlText(post.com),
         subject: post.sub,
-        source: '8chan_greatawakening',
-        link: `https://8ch.net/greatawakening/res/${post.resto}.html#${post.no}`,
+        source: '8chan_' + board,
+        link: `https://8ch.net/${board}/res/${post.resto}.html#${post.no}`,
         threadId: post.resto.toString(),
         isNew: true
     };
