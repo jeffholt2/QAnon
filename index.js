@@ -19,7 +19,8 @@ function main() {
         getLocalJson('polTrip8chanPosts'),
         getLocalJson('cbtsNonTrip8chanPosts'),
         getLocalJson('cbtsTrip8chanPosts'),
-        getLocalJson('thestormTrip8chanPosts')
+        getLocalJson('thestormTrip8chanPosts'),
+        getLocalJson('greatawakeningTrip8chanPosts')
 
     ]).then(values => {
         answers = values[0];
@@ -28,7 +29,8 @@ function main() {
             .concat(values[2])
             .concat(values[3])
             .concat(values[4])
-            .concat(values[5]);
+            .concat(values[5])
+            .concat(values[6]);
         posts.sort((a, b) => b.timestamp - a.timestamp);
         postOrder.push(...(posts.map(p => p.id).reverse()));
 
@@ -258,11 +260,11 @@ const addHighlights = text => !text
 function checkForNewPosts() {
     notify('Searching for new posts');
 
-    const alreadyParsedIds = Array.from(new Set(posts.filter(p => p.source = '8chan_thestorm')))
-        .map(p => parseInt(p.threadId))
-        .concat([3995, 6376, 7827]);
+    const alreadyParsedIds = [];
+        // Array.from(new Set(posts.filter(p => p.source = '8chan_greatawakening')))
+        // .map(p => parseInt(p.threadId));
 
-    const catalogUrl = 'https://8ch.net/thestorm/catalog.json';
+    const catalogUrl = 'https://8ch.net/greatawakening/catalog.json';
 
     getJson(catalogUrl).then(response => {
 
@@ -291,7 +293,7 @@ function checkForNewPosts() {
 }
 
 function getLivePostsByThread(id) {
-    const threadUrl = (id) => `https://8ch.net/thestorm/res/${id}.json`;
+    const threadUrl = (id) => `https://8ch.net/greatawakening/res/${id}.json`;
     const referencePattern = />>(\d+)/g;
 
     return getJson(threadUrl(id)).then(result => {
@@ -336,8 +338,8 @@ function parseLive8chanPost(post) {
         trip: post.trip,
         text: cleanHtmlText(post.com),
         subject: post.sub,
-        source: '8chan_thestorm live',
-        link: `https://8ch.net/thestorm/res/${post.resto}.html#${post.no}`,
+        source: '8chan_greatawakening',
+        link: `https://8ch.net/greatawakening/res/${post.resto}.html#${post.no}`,
         threadId: post.resto.toString(),
         isNew: true
     };
