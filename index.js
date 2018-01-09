@@ -196,7 +196,7 @@ const html = {
         const edate = new Date(post.edited * 1000);
         return `
         <header>
-            <time datetime="${date.toISOString()}">${formatTime(date)}</time>
+            <time datetime="${date.toISOString()}">${formatDate(date)} ${formatTime(date)}</time>
 
             ${ifExists(post.subject, x => `
             <span class="subject" title="subject">${x}</span>`)}
