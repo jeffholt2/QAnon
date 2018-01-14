@@ -40,5 +40,40 @@
     "threadId": "1",
     "source": "8chan_qresearch",
     "link": "https://8ch.net//qresearch/res/1.html#25"
+  },
+  {
+    "id": "42981",
+    "userId": "e57603",
+    "timestamp": 1515905417,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>42090\nImpressive, anon!\nQ\n",
+    "images": [],
+    "threadId": "41375",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/41375.html#42981",
+    "references": [
+      {
+        "id": "42090",
+        "userId": "504a98",
+        "timestamp": 1515901850,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": "Chess fag saysssss.\nJA's chessboard is a famous game with a deadly move that was thwarted by the world champ in 1918.\nThis comes on the day of Trump's zero tweet marker.\nNext move on JA's chess board is (are you ready for this?\n\nQf3 = Queen to f3 \nQ FOX THREE\n",
+        "images": [
+          {
+            "url": "https://media.8ch.net/file_store/c3dbf3952de6613050b5a77c865d445566e0315bb201f6b428a81f768bfe07b3.png",
+            "filename": "qfoxthree.PNG"
+          }
+        ],
+        "threadId": "41375",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/41375.html#42090"
+      }
+    ]
   }
 ]
