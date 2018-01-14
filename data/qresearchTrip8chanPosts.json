@@ -140,5 +140,72 @@
         "link": "https://8ch.net//qresearch/res/42982.html#43719"
       }
     ]
+  },
+  {
+    "id": "49343",
+    "userId": "ee5a39",
+    "timestamp": 1515961620,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>49330\nHe doesn't have 6b. \nWe froze his assets. \nThink logically. \nWhen does a BIRD TALK?\nQ\n",
+    "images": [],
+    "threadId": "48753",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/48753.html#49343",
+    "references": [
+      {
+        "id": "49330",
+        "userId": "9c8009",
+        "timestamp": 1515961547,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": ">>49315\njust saw story about alwaleed in prison because he won't pay 6 billion to secure freedoom\n",
+        "images": [],
+        "threadId": "48753",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/48753.html#49330",
+        "references": [
+          {
+            "id": "49315",
+            "userId": "7e0da8",
+            "timestamp": 1515961485,
+            "subject": null,
+            "name": "Anonymous",
+            "email": null,
+            "trip": null,
+            "text": ">>49232\nWhat I glean from this. 187 reference to Seth Rich. Killers DOA. \n\nVegas still tied up.  (Alwaleed not talking yet)\n",
+            "images": [],
+            "threadId": "48753",
+            "source": "8chan_qresearch",
+            "link": "https://8ch.net//qresearch/res/48753.html#49315",
+            "references": [
+              {
+                "id": "49232",
+                "userId": "b1207c",
+                "timestamp": 1515961136,
+                "subject": null,
+                "name": "Anonymous",
+                "email": null,
+                "trip": null,
+                "text": "new Q\n",
+                "images": [
+                  {
+                    "url": "https://media.8ch.net/file_store/83828748f9947b973be11eeb540f8f81bc2c565eacc79a4c758a26fb508670dd.png",
+                    "filename": "q.png"
+                  }
+                ],
+                "threadId": "48753",
+                "source": "8chan_qresearch",
+                "link": "https://8ch.net//qresearch/res/48753.html#49232"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
