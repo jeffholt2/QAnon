@@ -75,5 +75,70 @@
         "link": "https://8ch.net//qresearch/res/41375.html#42090"
       }
     ]
+  },
+  {
+    "id": "43627",
+    "userId": "297c5d",
+    "timestamp": 1515907954,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>43088\nWe're closer than you think.\nTry to get some sleep, it must be difficult.\nQ\n",
+    "images": [],
+    "threadId": "42982",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/42982.html#43627",
+    "references": [
+      {
+        "id": "43088",
+        "userId": "2a110a",
+        "timestamp": 1515905930,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": "F*k!!!\n",
+        "images": [
+          {
+            "url": "https://media.8ch.net/file_store/cfee654a467f894fa953e0e9b310d03c19bb98a788b2822ddb4ba6ef1e879d5b.png",
+            "filename": "ClipboardImage.png"
+          }
+        ],
+        "threadId": "42982",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/42982.html#43088"
+      }
+    ]
+  },
+  {
+    "id": "43766",
+    "userId": "297c5d",
+    "timestamp": 1515908371,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>43719\nHave you not discovered the CONFIRMED correlation between posts here and Tweets yet?\nQ\n",
+    "images": [],
+    "threadId": "42982",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/42982.html#43766",
+    "references": [
+      {
+        "id": "43719",
+        "userId": "25434a",
+        "timestamp": 1515908229,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": "POTUS just retweeted story \"Hillary Clintons 33,000 emails may not be missing after all\"\n",
+        "images": [],
+        "threadId": "42982",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/42982.html#43719"
+      }
+    ]
   }
 ]
