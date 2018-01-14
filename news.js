@@ -116,6 +116,4 @@ const html = {
     },
 };
 
-const getHostname = urlString => new URL(urlString).hostname;
-
 document.addEventListener('DOMContentLoaded', main, false);

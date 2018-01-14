@@ -60,6 +60,32 @@ article.selected {
   background-color: #f6fafd;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
 }
+article > button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+article .links > div {
+  position: relative;
+  background-color: #fafafa;
+  padding: 10px;
+  margin: 5px -10px;
+  max-width: 100%;
+}
+article .links > div a {
+  text-decoration: none;
+  color: inherit;
+}
+article .links > div a:hover {
+  color: #34459d;
+}
+article .links > div small {
+  color: #808080;
+  margin-left: 20px;
+  text-align: center;
+  display: block;
+}
 blockquote {
   margin: 0 0 10px;
   padding: 10px;

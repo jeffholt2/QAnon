@@ -9,17 +9,19 @@ aside {
   box-shadow: -1px 2px 4px 0 hsla(0, 0%, 0%, 0.2);
   z-index: 10;
   position: relative;
+
+  h1 > * {
+    margin-left: 10px
+  }
+  h2 {
+    color: hsl(0, 0%, 50%);
+    text-align: center;
+  }
+  h3 {
+    font-size: 14px;
+  }
 }
-aside h1 > * {
-  margin-left: 10px
-}
-aside h2 {
-  color: hsl(0, 0%, 50%);
-  text-align: center;
-}
-aside h3 {
-  font-size: 14px;
-}
+
 article {
   position: relative;
   border-radius: 6px;
@@ -37,7 +39,7 @@ article {
     display: flex;
     flex-wrap: wrap;
 
-    >*{
+    > * {
       margin-right: 10px;
       display: inline-block;
     }
@@ -49,7 +51,7 @@ article {
     color: hsl(359, 82%, 36%);
   }
   .new {
-    font-weight:bold;
+    font-weight: bold;
     color: #299e35;
   }
   .filename {
@@ -60,6 +62,35 @@ article {
   &.selected {
     background-color: hsl(208, 70%, 98%);
     box-shadow: 0 1px 4px 0 hsla(0, 0%, 0%, 0.2);
+  }
+  >button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+  }
+  .links {
+    > div {
+      position: relative;
+      background-color: hsl(0, 0%, 98%);
+      padding: 10px;
+      margin: 5px -10px;
+      max-width: 100%;
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        &:hover {
+          color: #34459d;
+        }
+      }
+      small {
+        color: hsl(0, 0%, 50%);
+        margin-left: 20px;
+        text-align: center;
+        display: block;
+      }
+    }
   }
 }
 
@@ -77,24 +108,31 @@ q {
   position: absolute;
   left: -30px;
 }
+
 .source_4chan_pol {
   border-left: 4px solid hsl(120, 75%, 80%);
 }
+
 .source_8chan_pol {
   border-left: 4px solid hsl(240, 75%, 80%);
 }
+
 .source_8chan_cbts {
   border-left: 4px solid hsl(210, 75%, 80%);
 }
+
 .source_8chan_thestorm {
   border-left: 4px solid hsl(30, 75%, 80%);
 }
+
 .source_8chan_greatawakening {
   border-left: 4px solid hsl(0, 75%, 80%);
 }
+
 .source_8chan_qresearch {
   border-left: 4px solid hsl(60, 75%, 80%);
 }
+
 .deleted {
   background-color: hsl(0, 50%, 85%);
 }
@@ -104,10 +142,12 @@ article button.answers {
   right: 0;
   top: 0;
 }
+
 .answers.empty {
   background-color: hsl(0, 80%, 40%);
   color: white;
 }
+
 .answers.edited {
   background-color: hsl(120, 80%, 40%);
   color: white;
@@ -116,13 +156,15 @@ article button.answers {
 textarea {
   border: 1px solid hsl(0, 0%, 90%);
 }
+
 #Copy {
   width: 1px;
-  opacity:0;
+  opacity: 0;
 }
+
 #fixed-bottom {
-    position: fixed;
-    bottom: 0;
+  position: fixed;
+  bottom: 0;
 
   #notification {
     padding: 5px 10px;
@@ -137,21 +179,27 @@ EDITOR
 .editor-toolbar {
   border: none;
 }
+
 .disabled-for-preview :not(.no-disable) {
   visibility: hidden;
 }
+
 i.separator {
   display: none !important;
 }
+
 a.fa.fa-eye.no-disable.active::before {
   content: "\f040";
 }
+
 .CodeMirror {
   border-style: dotted;
 }
-.disabled-for-preview+.CodeMirror {
+
+.disabled-for-preview + .CodeMirror {
   border: none;
 }
+
 .editor-preview {
   border: none;
   background-color: hsl(208, 70%, 98%);
@@ -161,25 +209,29 @@ a.fa.fa-eye.no-disable.active::before {
 /*
 Answers toggle
  */
-@media screen and (max-width: 1000px){
+@media screen and (max-width: 1000px) {
   aside {
     display: none;
   }
+
   .hide-mobile {
     display: none;
   }
+
   section {
     width: 100%;
   }
+
   .answers {
     display: none;
   }
 }
 
-@media screen and (max-width: 480px){
+@media screen and (max-width: 480px) {
   [type=search] {
     width: 250px;
   }
+
   article {
     width: 295px;
   }
@@ -203,6 +255,7 @@ Dialog
 button[onclick="toggleDialog()"] {
   font-size: 18px;
 }
+
 .dialog {
   display: none;
 
@@ -228,7 +281,7 @@ button[onclick="toggleDialog()"] {
   &.open {
     opacity: 1;
     transform: scale(1) translate(-50%, -50%);
-    &+.overlay {
+    & + .overlay {
       display: block;
     }
   }
@@ -252,6 +305,6 @@ button[onclick="toggleDialog()"] {
   height: 100%;
   width: 100%;
   z-index: 1001;
-  background-image: linear-gradient(-19deg, rgba(43,40,50,0.8) 0%, rgba(43,40,50,0.4) 46%, rgba(0,0,0,0.05) 50%);
+  background-image: linear-gradient(-19deg, rgba(43, 40, 50, 0.8) 0%, rgba(43, 40, 50, 0.4) 46%, rgba(0, 0, 0, 0.05) 50%);
   filter: blur(70px);
 }

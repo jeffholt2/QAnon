@@ -45,6 +45,22 @@ function main() {
     });
 
     toggleAnswers();
+    initNews();
+}
+
+function initNews() {
+    getLocalJson('news').then(value => {
+        const container = document.querySelector('article');
+        const post = container.item;
+        const listElement = tag('div', {'class': 'links'});
+        const items = [];
+        for(const item of items) {
+            const element = tag.fromString(html.news(item));
+            listElement.appendChild(element);
+            element.item = item;
+        }
+        container.appendChild(listElement);
+    });
 }
 
 function initSearch() {
@@ -118,7 +134,7 @@ function applyFilter(ids) {
         }
     }
     document.querySelector('#count').textContent = `${count}`;
-    for(const h3 of Array.from(document.querySelectorAll('main .sticky'))) {
+    for (const h3 of Array.from(document.querySelectorAll('main .sticky'))) {
         const section = h3.nextElementSibling;
         h3.hidden = Array.from(section.children).every(c => c.hidden);
     }
@@ -184,6 +200,7 @@ const html = {
           ${forAll(post.references, x => `
           <blockquote id="post${post.id}">${html.post(x)}</blockquote>`)}
           ${html.post(post)}
+          <button class="">V</button>
         </article>`;
     },
     date: (date) => {
@@ -232,7 +249,23 @@ const html = {
           <span class="filename" title="file name">${x}</span>`)}
           <img src="${image.url}" class="contain" width="300" height="300">
         </a>`;
-    }
+    },
+    news: item => {
+        return `
+        <div>
+        <a href="${item.url}" target="_blank" class="row">
+          <div>${ifExists(item.imageUrl, html.thumbnail)}</div>
+          <h2 class="stretch">${item.headline}</h2>
+        </a>
+        ${ifExists(item.description, x => `
+        <p class="text">${x}</p>`)}
+        <small>${getHostname(item.url)}</small>
+        </div>`;
+    },
+    thumbnail: (src) => {
+        if (!src) return '';
+        return `<img src="${src}" class="contain" width="100" height="100">`;
+    },
 };
 const answerButtonClass = (postId) => editedAnswers[postId]
     ? 'edited'
@@ -263,12 +296,11 @@ function checkForNewPosts() {
     const boards = ['greatawakening', 'qresearch'];
     notify(`Searching for new posts`);
 
-    for(const board of boards) {
+    for (const board of boards) {
 
         const alreadyParsedIds =
             Array.from(new Set(posts.filter(p => !p.isNew && p.source == `8chan_${board}`)))
-            .map(p => parseInt(p.threadId));
-
+                .map(p => parseInt(p.threadId));
 
 
         const catalogUrl = `https://8ch.net/${board}/catalog.json`;
@@ -514,16 +546,3 @@ function getAllAnswersUpdate() {
 window.addEventListener('beforeunload', storeLocalAnswers);
 
 document.addEventListener('DOMContentLoaded', main, false);
-
-/*
-C!Odemonkey.  ☯ 8chan Administrator 01/06/18 (Sat) 16:19:37 1fb886 No.6196
-A summary of events.
->January 2
-I added super secure tripcodes. /cbts/ BO secures one.
->January 5 (Japan time)
-Someone on /sudo/ pointed out that super secure tripcodes excluded capital letters, a big oversight which I fixed. I changed the code and announced it just on /sudo/. /cbts/ BO doesn't know about it and continues using the tripcode he secured, but because the code changed, his tripcode also changed - this led to confusion.
-Q comes back and posts on /cbts/ normally. Post history is not the same, IP hash is not the same. /cbts/ BO assumes, incorrectly, that this is not Q, even though there are a number of reasons why a post history may start from zero, including changing VPN providers, changing VPN IP locations, using cellular data, resetting your modem, posting from a different location, using a different IP (hotel, restaurant etc.).
-/cbts/ BO deletes those posts.
-Then, Q goes to /pol/, where he is banned, and then /thestorm/, where he asks for verification.
-Around 12 hours later, I confirm it is actually Q using his verified tripcode (still uncracked) on /thestorm/.
-*/
