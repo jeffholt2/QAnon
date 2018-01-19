@@ -483,5 +483,40 @@
         ]
       }
     ]
+  },
+  {
+    "id": "97777",
+    "userId": "ee2415",
+    "timestamp": 1516402233,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>97752\nHe has to use the bathroom prior to leaving.\nQ\n",
+    "images": [],
+    "threadId": "97364",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/97364.html#97777",
+    "references": [
+      {
+        "id": "97752",
+        "userId": "6ac131",
+        "timestamp": 1516402157,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": "\n",
+        "images": [
+          {
+            "url": "https://media.8ch.net/file_store/a2e3d1f2974ffd753ede1a4ee9603d5152c4fc9ad96a33bdbba090a75c5ed48a.jpeg",
+            "filename": "137F7BD8-BF28-40B0-ACDE-B….jpeg"
+          }
+        ],
+        "threadId": "97364",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/97364.html#97752"
+      }
+    ]
   }
 ]
