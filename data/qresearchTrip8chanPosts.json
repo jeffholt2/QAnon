@@ -359,5 +359,129 @@
     "threadId": "97364",
     "source": "8chan_qresearch",
     "link": "https://8ch.net//qresearch/res/97364.html#97639"
+  },
+  {
+    "id": "97705",
+    "userId": "ee2415",
+    "timestamp": 1516401962,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>97686\nCombat tactics.\nQ\n",
+    "images": [],
+    "threadId": "97364",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/97364.html#97705",
+    "references": [
+      {
+        "id": "97686",
+        "userId": "a27ebf",
+        "timestamp": 1516401883,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": ">>97639\n\nAny insight into the Fake News Awards?  \nHard to believe POTUS would have to reschedule 10 days later just to tweet a link, unless something else was happening there.  \nWas our work here successful for what you needed from us?\n",
+        "images": [],
+        "threadId": "97364",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/97364.html#97686",
+        "references": [
+          {
+            "id": "97639",
+            "userId": "ee2415",
+            "timestamp": 1516401776,
+            "subject": null,
+            "name": "Q",
+            "email": null,
+            "trip": "!UW.yye1fxo",
+            "text": "Need a few red pills for family, friends, and others?\nRead the #Memo.\nRelease coming.\nFinal clearance underway.\nMake sure to learn Russian.\nQ\n",
+            "images": [],
+            "threadId": "97364",
+            "source": "8chan_qresearch",
+            "link": "https://8ch.net//qresearch/res/97364.html#97639"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "97753",
+    "userId": "ee2415",
+    "timestamp": 1516402161,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>97724\nShall we play a game?\nHow about a nice game of chess?\nWarGames.\nDouble meaning.\n[CLAS-5849]\nFake incoming missile alert [Defcon 1].\nWe know all.\nTRUST.\nQ\n",
+    "images": [],
+    "threadId": "97364",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/97364.html#97753",
+    "references": [
+      {
+        "id": "97724",
+        "userId": "9b8d2a",
+        "timestamp": 1516402019,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": ">>97705\nwas that our \"wargames\" i.e. get us meme troops in a live-fire drill?\n",
+        "images": [],
+        "threadId": "97364",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/97364.html#97724",
+        "references": [
+          {
+            "id": "97705",
+            "userId": "ee2415",
+            "timestamp": 1516401962,
+            "subject": null,
+            "name": "Q",
+            "email": null,
+            "trip": "!UW.yye1fxo",
+            "text": ">>97686\nCombat tactics.\nQ\n",
+            "images": [],
+            "threadId": "97364",
+            "source": "8chan_qresearch",
+            "link": "https://8ch.net//qresearch/res/97364.html#97705",
+            "references": [
+              {
+                "id": "97686",
+                "userId": "a27ebf",
+                "timestamp": 1516401883,
+                "subject": null,
+                "name": "Anonymous",
+                "email": null,
+                "trip": null,
+                "text": ">>97639\n\nAny insight into the Fake News Awards?  \nHard to believe POTUS would have to reschedule 10 days later just to tweet a link, unless something else was happening there.  \nWas our work here successful for what you needed from us?\n",
+                "images": [],
+                "threadId": "97364",
+                "source": "8chan_qresearch",
+                "link": "https://8ch.net//qresearch/res/97364.html#97686",
+                "references": [
+                  {
+                    "id": "97639",
+                    "userId": "ee2415",
+                    "timestamp": 1516401776,
+                    "subject": null,
+                    "name": "Q",
+                    "email": null,
+                    "trip": "!UW.yye1fxo",
+                    "text": "Need a few red pills for family, friends, and others?\nRead the #Memo.\nRelease coming.\nFinal clearance underway.\nMake sure to learn Russian.\nQ\n",
+                    "images": [],
+                    "threadId": "97364",
+                    "source": "8chan_qresearch",
+                    "link": "https://8ch.net//qresearch/res/97364.html#97639"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
