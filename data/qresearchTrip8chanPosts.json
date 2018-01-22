@@ -825,5 +825,35 @@
     "threadId": "126828",
     "source": "8chan_qresearch",
     "link": "https://8ch.net//qresearch/res/126828.html#127218"
+  },
+  {
+    "id": "127256",
+    "userId": "f2d4bd",
+    "timestamp": 1516648568,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>127246\nThank you for visiting the WH.\nFEAR.\nQ\n",
+    "images": [],
+    "threadId": "126828",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/126828.html#127256",
+    "references": [
+      {
+        "id": "127246",
+        "userId": "47a6de",
+        "timestamp": 1516648498,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": "This entire shutdown exercise was Schumers attempt to put Trump in his place. He failed spectacularly.\n",
+        "images": [],
+        "threadId": "126828",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/126828.html#127246"
+      }
+    ]
   }
 ]
