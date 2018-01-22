@@ -718,5 +718,40 @@
         ]
       }
     ]
+  },
+  {
+    "id": "120361",
+    "userId": "7f44ec",
+    "timestamp": 1516588880,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>120326\nOriginal leak renewed.\nAlabama investigation?\nQ\n",
+    "images": [],
+    "threadId": "119439",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/119439.html#120361",
+    "references": [
+      {
+        "id": "120326",
+        "userId": "281cab",
+        "timestamp": 1516588731,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": "shills working overtime… this email was confirmed between Q posting time and 4,10,20 posting time at 51 minutes and it being the 51st post\n",
+        "images": [
+          {
+            "url": "https://media.8ch.net/file_store/12be822f398904a6981d207b31854dbde63481d35a84703030debfbdb2ed3ca8.jpg",
+            "filename": "proof.jpg"
+          }
+        ],
+        "threadId": "119439",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/119439.html#120326"
+      }
+    ]
   }
 ]
