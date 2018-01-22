@@ -123,6 +123,7 @@ article button.answers {
   position: absolute;
   right: 0;
   top: 0;
+  bottom: auto;
 }
 .answers.empty {
   background-color: #b81414;
