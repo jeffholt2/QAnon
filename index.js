@@ -200,7 +200,7 @@ const html = {
           ${forAll(post.references, x => `
           <blockquote id="post${post.id}">${html.post(x)}</blockquote>`)}
           ${html.post(post)}
-          <button class="">V</button>
+          <!--<button class="">V</button>-->
         </article>`;
     },
     date: (date) => {
