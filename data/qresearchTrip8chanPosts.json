@@ -967,5 +967,51 @@
     "threadId": "138983",
     "source": "8chan_qresearch",
     "link": "https://8ch.net//qresearch/res/138983.html#139507"
+  },
+  {
+    "id": "139610",
+    "userId": "384dbe",
+    "timestamp": 1516747465,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>139556\nFailed to load sec encryption.\nResolved.\nQ\n",
+    "images": [],
+    "threadId": "138983",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/138983.html#139610",
+    "references": [
+      {
+        "id": "139556",
+        "userId": "ee36f3",
+        "timestamp": 1516747181,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": ">>139507\nHello Q, can you explain the failed sec test? Some of us have been concerned.\n",
+        "images": [],
+        "threadId": "138983",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/138983.html#139556",
+        "references": [
+          {
+            "id": "139507",
+            "userId": "384dbe",
+            "timestamp": 1516746994,
+            "subject": null,
+            "name": "Q",
+            "email": null,
+            "trip": "!UW.yye1fxo",
+            "text": "The light will reveal those on the team and those pretending to be. \nThis is not a game. \nThey want us divided. \nLast posts [self destruction] will immediately show the world the TRUTH.\nInstructions will be sent on how to preserve offline.\nYou didn’t think this was simply about words did you? \nWe have it all. \nComing soon to a theater near you.\nQ\n",
+            "images": [],
+            "threadId": "138983",
+            "source": "8chan_qresearch",
+            "link": "https://8ch.net//qresearch/res/138983.html#139507"
+          }
+        ]
+      }
+    ]
   }
 ]
