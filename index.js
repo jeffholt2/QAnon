@@ -8,7 +8,8 @@ const serverUrl = debug ? 'http://localhost:8080' : 'http://145.249.106.38';
 
 function main() {
     Promise.all([
-        'story',
+        getJson(`${serverUrl}/story`)
+    ].concat([
         'pol4chanPosts',
         'polTrip8chanPosts',
         'cbtsNonTrip8chanPosts',
@@ -16,7 +17,7 @@ function main() {
         'thestormTrip8chanPosts',
         'greatawakeningTrip8chanPosts',
         'qresearchTrip8chanPosts'
-    ].map(getLocalJson)).then(values => {
+    ].map(getLocalJson))).then(values => {
         stories = values[0];
         posts = []
             .concat(values[1])
@@ -42,7 +43,7 @@ function main() {
             const submission = Submission(form);
             submission.edits = edits;
             console.log(submission);
-            postJson(`${serverUrl}/story`).then(response => {
+            postJson(`${serverUrl}/story`, submission).then(response => {
                 console.log(response);
             });
         };
