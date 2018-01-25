@@ -1074,5 +1074,81 @@
     "threadId": "142127",
     "source": "8chan_qresearch",
     "link": "https://8ch.net//qresearch/res/142127.html#142428"
+  },
+  {
+    "id": "158263",
+    "userId": "fa6a1f",
+    "timestamp": 1516901496,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>158223\nAmazing coincidence?\nAlways close after crumb drops.\nQ\n",
+    "images": [],
+    "threadId": "158141",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/158141.html#158263",
+    "references": [
+      {
+        "id": "158223",
+        "userId": "c2dc64",
+        "timestamp": 1516901271,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": "Trump just tweeted. [22] minute delta marker.\n",
+        "images": [],
+        "threadId": "158141",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/158141.html#158223"
+      }
+    ]
+  },
+  {
+    "id": "158297",
+    "userId": "fa6a1f",
+    "timestamp": 1516901666,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>158263\nPOTUS' statement and focus [Tweet] on the UK should SCARE a lot of people.\nIt signifies something VERY IMPORTANT.\nVERY VERY VERY IMPORTANT.\nQ\n",
+    "images": [],
+    "threadId": "158141",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/158141.html#158297",
+    "references": [
+      {
+        "id": "158263",
+        "userId": "fa6a1f",
+        "timestamp": 1516901496,
+        "subject": null,
+        "name": "Q",
+        "email": null,
+        "trip": "!UW.yye1fxo",
+        "text": ">>158223\nAmazing coincidence?\nAlways close after crumb drops.\nQ\n",
+        "images": [],
+        "threadId": "158141",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/158141.html#158263",
+        "references": [
+          {
+            "id": "158223",
+            "userId": "c2dc64",
+            "timestamp": 1516901271,
+            "subject": null,
+            "name": "Anonymous",
+            "email": null,
+            "trip": null,
+            "text": "Trump just tweeted. [22] minute delta marker.\n",
+            "images": [],
+            "threadId": "158141",
+            "source": "8chan_qresearch",
+            "link": "https://8ch.net//qresearch/res/158141.html#158223"
+          }
+        ]
+      }
+    ]
   }
 ]
