@@ -8,8 +8,9 @@ const serverUrl = debug ? 'http://localhost:8080' : 'http://145.249.106.38';
 
 function main() {
     Promise.all([
-        getJson(`${serverUrl}/story`)
+        // getJson(`${serverUrl}/story`)
     ].concat([
+        'story',
         'pol4chanPosts',
         'polTrip8chanPosts',
         'cbtsNonTrip8chanPosts',
