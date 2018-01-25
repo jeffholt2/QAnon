@@ -1,30 +1,23 @@
 let posts = [];
-let editor;
-let answers = {};
-let editedAnswers = {};
+let stories = {};
 let postOrder = [];
+const md = window.markdownit();
+const isEditing = () => location.hash === '#edit';
+const edits = {};
+const serverUrl = debug ? 'http://localhost:8080' : 'http://145.249.106.38';
 
 function main() {
-    editor = new SimpleMDE({
-        element: document.getElementById('answers'),
-        spellChecker: false
-    });
-    if (!editor.isPreviewActive()) {
-        editor.togglePreview();
-    }
-
     Promise.all([
-        getLocalJson('answers'),
-        getLocalJson('pol4chanPosts'),
-        getLocalJson('polTrip8chanPosts'),
-        getLocalJson('cbtsNonTrip8chanPosts'),
-        getLocalJson('cbtsTrip8chanPosts'),
-        getLocalJson('thestormTrip8chanPosts'),
-        getLocalJson('greatawakeningTrip8chanPosts'),
-        getLocalJson('qresearchTrip8chanPosts')
-
-    ]).then(values => {
-        answers = values[0];
+        'story',
+        'pol4chanPosts',
+        'polTrip8chanPosts',
+        'cbtsNonTrip8chanPosts',
+        'cbtsTrip8chanPosts',
+        'thestormTrip8chanPosts',
+        'greatawakeningTrip8chanPosts',
+        'qresearchTrip8chanPosts'
+    ].map(getLocalJson)).then(values => {
+        stories = values[0];
         posts = []
             .concat(values[1])
             .concat(values[2])
@@ -39,28 +32,21 @@ function main() {
         render(posts);
         initSearch();
 
-        loadLocalAnswers();
-        selectAnswers(null);
         checkForNewPosts();
     });
 
-    toggleAnswers();
-    initNews();
-}
-
-function initNews() {
-    getLocalJson('news').then(value => {
-        const container = document.querySelector('article');
-        const post = container.item;
-        const listElement = tag('div', {'class': 'links'});
-        const items = [];
-        for(const item of items) {
-            const element = tag.fromString(html.news(item));
-            listElement.appendChild(element);
-            element.item = item;
-        }
-        container.appendChild(listElement);
-    });
+    if (isEditing()) {
+        const form = document.querySelector('#submitChanges');
+        form.onsubmit = e => {
+            e.preventDefault();
+            const submission = Submission(form);
+            submission.edits = edits;
+            console.log(submission);
+            postJson(`${serverUrl}/story`).then(response => {
+                console.log(response);
+            });
+        };
+    }
 }
 
 function initSearch() {
@@ -140,18 +126,39 @@ function applyFilter(ids) {
     }
 }
 
-function toggleAnswers() {
-    document
-        .body
-        .classList
-        .toggle('answers-disabled')
+function toggleDialog(id) {
+    if (!id) {
+        document.querySelector('.dialog.open').classList.remove('open');
+    } else {
+        const dialog = document.querySelector(`.dialog#${id}`);
+        dialog.classList.toggle('open');
+    }
 }
 
-function toggleDialog() {
-    const dialog = document.querySelector('.dialog');
-    dialog
-        .classList
-        .toggle('open');
+function openStory(postId) {
+    const dialog = document.querySelector(`.dialog#story`);
+    const container = dialog.querySelector(`.container`);
+    container.innerHTML = '';
+    const post = posts.find(p => p.id == postId);
+
+    const postElement = tag.fromString(html.postWithReplies(post));
+    postElement.querySelector('button').remove();
+
+    const header = dialog.querySelector('header');
+    header.innerHTML = '';
+    header.appendChild(postElement);
+
+    const story = stories[postId] || [];
+    story.postId = postId;
+    container.story = story;
+
+    story.map(StoryElement).forEach(appendTo(container));
+
+    if (isEditing()) {
+        create(AddForm(), appendTo(header), onSubmit(addNewStory(story, container)));
+    }
+
+    toggleDialog('story');
 }
 
 function notify(text) {
@@ -195,12 +202,13 @@ const html = {
     postWithReplies: (post) => {
         return `
         <article id="post${post.id}" class="source_${post.source}${ifExists(post.timestampDeletion, () => ' deleted')}">
-          <button onclick="selectAnswers(${post.id})" class="answers ${answerButtonClass(post.id)}">answers</button>
           <span class="counter">${postOrder.indexOf(post.id) + 1}</span>
           ${forAll(post.references, x => `
           <blockquote id="post${post.id}">${html.post(x)}</blockquote>`)}
           ${html.post(post)}
-          <!--<button class="">V</button>-->
+          ${ifExists(stories[post.id] || isEditing(), x => `
+          <button onclick="openStory(${post.id})">answers</button>
+          `)}
         </article>`;
     },
     date: (date) => {
@@ -252,26 +260,41 @@ const html = {
     },
     news: item => {
         return `
-        <div>
         <a href="${item.url}" target="_blank" class="row">
           <div>${ifExists(item.imageUrl, html.thumbnail)}</div>
           <h2 class="stretch">${item.headline}</h2>
         </a>
         ${ifExists(item.description, x => `
         <p class="text">${x}</p>`)}
-        <small>${getHostname(item.url)}</small>
-        </div>`;
+        <small>${getHostname(item.url)}</small>`;
     },
     thumbnail: (src) => {
         if (!src) return '';
         return `<img src="${src}" class="contain" width="100" height="100">`;
     },
+    addStoryItemForm: () => {
+        return `<form class="content">
+        <h2>Create a story item</h2>
+        <div>
+            <input id="type_tweet" name="type" type="radio" value="tweet" required>
+            <label for="type_tweet">Tweet</label>
+            <input id="type_textPart" name="type" type="radio" value="textPart" required>
+            <label for="type_textPart">Text part</label>
+        </div>
+        <div id="details_textPart">
+            <label for="markdown">Markdown</label>
+            <textarea id="markdown" name="markdown" required></textarea>
+        </div>
+        <div id="details_tweet">
+            <label for="tweetUrl">Tweet Url</label>
+            <input id="tweetUrl" name="tweetUrl" type="url" pattern="https://twitter\.com/.*/status/[0-9]+" title="A valid url of a tweet url" required placeholder="e.g. https://twitter.com/realDonaldTrump/status/954681839419101185">
+        </div>
+        <div>
+            <button type="submit" class="icon">add</button>
+        </div>
+        </form>`;
+    }
 };
-const answerButtonClass = (postId) => editedAnswers[postId]
-    ? 'edited'
-    : answers[postId] && answers[postId].length
-        ? ''
-        : 'empty';
 
 const withLocalUrl = (image) => ({filename: image.filename, url: localImgSrc(image.url)});
 
@@ -281,14 +304,16 @@ const localImgSrc = src => 'data/images/' + src
 
 const legendPattern = new RegExp(`([^a-zA-Z])(${Object.keys(legend).join('|')})([^a-zA-Z])`, 'g');
 
-const addHighlights = text => !text
-    ? ''
-    : text.replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`)
-        .replace(/(https?:\/\/[.\w\/?\-=&#]+)/g, (match) => match.endsWith('.jpg')
-            ? `<img src="${match}" alt="image">`
-            : `<a href="${match}" target="_blank">${match}</a>`)
-        .replace(/(\[[^[]+])/g, (match) => `<strong>${match}</strong>`)
-        .replace(legendPattern, (match, p1, p2, p3, o, s) => `${p1}<abbr title="${legend[p2]}">${p2}</abbr>${p3}`);
+function addHighlights(text) {
+    return !text
+        ? ''
+        : text.replace(/(^>[^>].*\n?)+/g, (match) => `<q>${match}</q>`)
+            .replace(/(https?:\/\/[.\w\/?\-=&#]+)/g, (match) => match.endsWith('.jpg')
+                ? `<img src="${match}" alt="image">`
+                : `<a href="${match}" target="_blank">${match}</a>`)
+            .replace(/(\[[^[]+])/g, (match) => `<strong>${match}</strong>`)
+            .replace(legendPattern, (match, p1, p2, p3, o, s) => `${p1}<abbr title="${legend[p2]}">${p2}</abbr>${p3}`);
+}
 
 // PARSE 8chan
 
@@ -400,149 +425,111 @@ function cleanHtmlText(htmlText) {
         .replace(paragraphPattern, (m, p1) => `${p1}\n`);
 }
 
-//////////////////// answers functions //////////////////
+/// editing
+function StoryElement(storyPart) {
+    const storyContainer = tag('div', {'class': storyPart.type});
+    if (isEditing()) {
+        storyContainer.appendChild(tag.fromString(`
+            <header>
+                <button class="icon" onclick="moveUpStoryPart(this)">keyboard_arrow_up</button>
+                <button class="icon" onclick="moveDownStoryPart(this)">keyboard_arrow_down</button>
+                <button class="icon" onclick="deleteStoryPart(this)">delete</button>
+            </header>
+            `));
+        storyContainer.item = storyPart;
+    }
+    switch (storyPart.type) {
+        case 'tweet':
+            const tweetId = storyPart.tweetUrl.split('/').slice(-1)[0];
+            twttr.widgets.createTweet(tweetId, storyContainer).then(el => {
+                const div = el.contentDocument.body.firstElementChild;
+                el.remove();
+                storyContainer.appendChild(div);
+            });
+            break;
+        case 'news':
+            storyContainer.appendChild(tag.fromString(html.news(storyPart.item)));
+            break;
+        case 'textPart':
+            storyContainer.appendChild(tag.fromString(`<div>${md.render(storyPart.markdown)}</div>`));
+            break;
+    }
+    return storyContainer;
+}
 
-const ifElement = (selector, callback) => {
-    const element = document.querySelector(selector);
-    if (element)
-        return callback(element);
+function AddForm() {
+    const form = tag.fromString(html.addStoryItemForm());
+
+    bindRadios('type', form);
+
+    return form;
+}
+
+function moveUpStoryPart(button) {
+    const storyContainer = button.parentElement.parentElement;
+    const container = storyContainer.parentElement;
+    if (container.firstElementChild !== storyContainer) {
+        container.insertBefore(storyContainer, storyContainer.previousElementSibling);
+    }
+    const story = storyContainer.parentElement.story;
+    updateEditStory(story);
+
+    const item = storyContainer.item;
+    const index = story.indexOf(item);
+    story[index] = story[index - 1];
+    story[index - 1] = item;
+}
+
+function moveDownStoryPart(button) {
+    const storyContainer = button.parentElement.parentElement;
+    const container = storyContainer.parentElement;
+    const story = storyContainer.parentElement.story;
+
+    if (container.lastElementChild !== storyContainer) {
+        container.insertBefore(storyContainer, storyContainer.nextElementSibling.nextElementSibling);
+    } else {
+        container.appendChild(storyContainer);
+    }
+
+    const item = storyContainer.item;
+    const index = story.indexOf(item);
+    story[index] = story[index + 1];
+    story[index + 1] = item;
+
+    updateEditStory(story);
+}
+
+function deleteStoryPart(button) {
+    const storyContainer = button.parentElement.parentElement;
+    const story = storyContainer.parentElement.story;
+    const item = storyContainer.item;
+    story.splice(story.indexOf(item), 1);
+    storyContainer.remove();
+    updateEditStory(story);
+}
+
+const addNewStory = (story, container) => form => event => {
+    event.preventDefault();
+
+    const submission = Submission(form);
+
+    story.push(submission);
+
+    create(StoryElement(submission), appendTo(container));
+
+    updateEditStory(story);
+
+    const radio = form.querySelector('[name=type]:checked');
+    form.reset();
+    radio.checked = true;
 };
 
-function copyAnswers() {
-    ifElement('article.selected', selectedArticle => {
-        const postId = selectedArticle.item.postId;
-        editedAnswers[postId] = editor.value();
-    });
-
-    const copyTextarea = document.querySelector('#Copy');
-    copyTextarea.value = JSON.stringify(editedAnswers, null, 2);
-
-    copyTextarea.select();
-    try {
-        document.execCommand('copy');
-        copyTextarea.value = '';
-    } catch (err) {
-        alert('browser doesn\'t support copy');
-    }
+function updateEditStory(story) {
+    stories[story.postId] = story;
+    edits[story.postId] = story;
+    const submitChanges = document.querySelector('#submitChanges');
+    submitChanges.hidden = false;
+    submitChanges.querySelector('#editSummary strong').textContent = Object.keys(edits).length;
 }
-
-function resetAnswer() {
-    ifElement('article.selected', selectedArticle => {
-        const postId = selectedArticle.item.id;
-        delete editedAnswers[postId];
-        const value = answers[postId] || '';
-        editor.value(value);
-        if (editor.isPreviewActive()) {
-            setPreview(editor);
-        }
-        selectedArticle
-            .querySelector('article button')
-            .className = `answers ${value
-            ? ''
-            : 'empty'}`;
-    });
-}
-
-const answerIsEdited = postId => (!answers[postId] && editor.value().length) || (answers[postId] && answers[postId] !== editor.value());
-
-function selectAnswers(selectedPostId) {
-    ifElement('article.selected', selectedArticle => {
-        const postId = selectedArticle.item.id;
-        if (answerIsEdited(postId)) {
-            editedAnswers[postId] = editor.value();
-            selectedArticle
-                .querySelector('article button')
-                .className = `answers edited`
-        }
-        selectedArticle
-            .classList
-            .remove('selected');
-    });
-    if (!selectedPostId) {
-        document
-            .querySelector('aside h1')
-            .innerHTML = `Answers`;
-        editor.value('');
-        if (editor.isPreviewActive()) {
-            setPreview(editor);
-        }
-        document
-            .querySelector('#editor-wrapper')
-            .style
-            .display = 'none';
-    } else {
-        document
-            .querySelector('#editor-wrapper')
-            .style
-            .display = 'block';
-
-        const article = document.querySelector(`#post${selectedPostId}`);
-        article
-            .classList
-            .add('selected');
-
-        document
-            .querySelector('aside h1')
-            .innerHTML = `Answers for <a href="#post${selectedPostId}">${selectedPostId}</a>`;
-
-        const answer = editedAnswers[selectedPostId] !== undefined
-            ? editedAnswers[selectedPostId]
-            : answers[selectedPostId] || '';
-        editor.value(answer);
-        // refresh hack
-        if (editor.isPreviewActive()) {
-            setPreview(editor);
-        }
-    }
-}
-
-function storeLocalAnswers() {
-    ifElement('article.selected', selectedArticle => {
-        const postId = selectedArticle.item.id;
-        editedAnswers[postId] = editor.value();
-    });
-    localStorage.setItem('answers', JSON.stringify(editedAnswers));
-}
-
-function loadLocalAnswers() {
-    const newAnswers = localStorage.getItem('answers');
-    if (newAnswers) {
-        editedAnswers = JSON.parse(newAnswers);
-    }
-}
-
-function setPreview(editor) {
-    const wrapper = editor
-        .codemirror
-        .getWrapperElement();
-    const toolbar = editor.options.toolbar
-        ? editor.toolbarElements.preview
-        : null;
-    const preview = wrapper.lastChild;
-
-    preview
-        .classList
-        .add("editor-preview-active");
-
-    if (toolbar) {
-        toolbar
-            .classList
-            .add("active");
-
-        const toolbarDiv = wrapper.previousSibling;
-        toolbarDiv
-            .classList
-            .add("disabled-for-preview");
-    }
-    preview.innerHTML = editor
-        .options
-        .previewRender(editor.value(), preview);
-}
-
-function getAllAnswersUpdate() {
-    return JSON.stringify(Object.assign({}, answers, editedAnswers), null, 2);
-}
-
-window.addEventListener('beforeunload', storeLocalAnswers);
 
 document.addEventListener('DOMContentLoaded', main, false);

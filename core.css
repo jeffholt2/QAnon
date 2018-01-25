@@ -35,6 +35,9 @@ section {
   align-items: flex-start;
   justify-content: flex-start;
 }
+.content > * {
+  margin: 20px 0;
+}
 .text {
   max-width: 100%;
   white-space: pre-wrap;
@@ -42,6 +45,9 @@ section {
 }
 .row {
   display: flex;
+}
+.row.space {
+  justify-content: center;
 }
 .stretch {
   flex: 1;
@@ -79,4 +85,7 @@ button:active {
 .sticky time {
   background-color: white;
   padding: 0 20px;
+}
+[hidden] {
+  display: none;
 }
