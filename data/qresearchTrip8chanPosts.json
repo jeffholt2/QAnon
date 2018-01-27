@@ -1228,5 +1228,35 @@
         ]
       }
     ]
+  },
+  {
+    "id": "171600",
+    "userId": "072a55",
+    "timestamp": 1517016032,
+    "subject": null,
+    "name": "Q",
+    "email": null,
+    "trip": "!UW.yye1fxo",
+    "text": ">>171424\nOur deepest condolences, Patriot.\nGod be with you and your family during this difficult time.\nQ\n",
+    "images": [],
+    "threadId": "171330",
+    "source": "8chan_qresearch",
+    "link": "https://8ch.net//qresearch/res/171330.html#171600",
+    "references": [
+      {
+        "id": "171424",
+        "userId": "dc047d",
+        "timestamp": 1517015000,
+        "subject": null,
+        "name": "Anonymous",
+        "email": null,
+        "trip": null,
+        "text": "I really wanted to be here through the whole thing but I just got word that my father has died and I need to take a step back as I deal with it. He was a good man and wanted nothing more than to watch all of Californias power structure hang for their crimes. If you guys could send some prayers my way it would be greatly appreciated\n",
+        "images": [],
+        "threadId": "171330",
+        "source": "8chan_qresearch",
+        "link": "https://8ch.net//qresearch/res/171330.html#171424"
+      }
+    ]
   }
 ]
